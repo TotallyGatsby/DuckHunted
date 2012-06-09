@@ -21,6 +21,7 @@ var flashlightTransform : Transform;
 
 //var parentTransform : Transform;
 private var mouseLookScript : MouseLook;
+private var characterMotor : CharacterMotor;
 
 
 function Start () 
@@ -28,11 +29,18 @@ function Start ()
 	gunDefaultPosition = gunTransform.localPosition; // Set Default position
 	gunDefaultRotation = gunTransform.localEulerAngles; // Set Default rotation
 	mouseLookScript = transform.GetComponent(MouseLook); // Get Mouse look script (For setting sensitivity when using zooming)
+	characterMotor = transform.GetComponent(CharacterMotor);
 }
 
 function Update () 
 {
 	Screen.lockCursor = true; // Captures the mouse cursor
+	
+	/* Movement */
+	//if (Input.GetButtonDown("Sprint"))
+	//{
+		//characterMotor.
+	//}
 
 	/* Gun Stuff */
 	
