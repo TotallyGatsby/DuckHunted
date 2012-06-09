@@ -76,12 +76,12 @@ function Update ()
 			gunTransform.FindChild("Model").animation.Play("Fire"); // Play firing animation, which in turns activates muzzle flash and gun sound
 			
 			// Raycasting
-			var fireRayPos = Vector3(transform.position.x, transform.position.y+0.8, transform.position.z+0.5);
+			var fireRayPos = Vector3(transform.position.x, transform.position.y, transform.position.z);
 			
 			var fireRay = new Ray(fireRayPos, transform.forward);
 			var fireRayHit : RaycastHit;
 			Debug.DrawRay (fireRay.origin, transform.forward, Color.blue, 1);
-			if (Physics.Raycast (fireRay, fireRayHit, 10000000))
+			if (Physics.Raycast (fireRay, fireRayHit, 10000))
 			{
 				Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
 				if (fireRayHit.collider.CompareTag("Enemy"))
