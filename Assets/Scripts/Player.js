@@ -19,7 +19,9 @@ var gunZoomPosition : Vector3 = Vector3(0, -0.15, 0.85); // Zoomed in Position &
 var gunZoomRotation : Vector3 = Vector3(0, 90, 0); // Rotation of gun
 var gunZoom = false; // Whatever the gun is zoomed in or not
 
-var gunTransform : Transform; 
+var gunTransform : Transform;
+
+public var bullets = 3;
 
 // Flashlight
 var flashlightOn = false; // Whatever the flashlight is on or not
@@ -71,24 +73,35 @@ function Update ()
 	// Fire
 	if (!sprinting) // Can't fire or zoom while sprinting
 	{
-		if (Input.GetButtonDown("Fire1") && !gunTransform.FindChild("Model").animation["Fire"].enabled)
+		if (Input.GetButtonDown("Fire1") && !gunTransform.FindChild("Model").animation["Fire"].enabled && !gunTransform.FindChild("Model").animation["Reload"].enabled)
 		{
-			gunTransform.FindChild("Model").animation.Play("Fire"); // Play firing animation, which in turns activates muzzle flash and gun sound
-			
-			// Raycasting
-			var fireRay = new Ray(Camera.mainCamera.transform.position, transform.forward);
-			var fireRayHit : RaycastHit;
-			Debug.DrawRay (fireRay.origin, transform.forward, Color.blue, 1);
-			if (Physics.Raycast (fireRay, fireRayHit, 1000000))
+			if (bullets > 0)
 			{
-				Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
-				if (fireRayHit.collider.CompareTag("Enemy"))
+				gunTransform.FindChild("Model").animation.Play("Fire"); // Play firing animation, which in turns activates muzzle flash and gun sound
+				
+				// Raycasting
+				var fireRay = new Ray(Camera.mainCamera.transform.position, transform.forward);
+				var fireRayHit : RaycastHit;
+				Debug.DrawRay (fireRay.origin, transform.forward, Color.blue, 1);
+				if (Physics.Raycast (fireRay, fireRayHit, 1000000))
 				{
-					fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
+					Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
+					if (fireRayHit.collider.CompareTag("Enemy"))
+					{
+						fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
+					}
 				}
+				//
+				
+				bullets -= 1; // Subtract bullet
 			}
-			//
+			else // Auto Reload
+				gunTransform.FindChild("Model").animation.CrossFade("Reload", 0.25); // Plays reload animation, which in turns triggers the reload
 		}
+		
+		// Manual Reload
+		if (Input.GetButtonDown("Reload"))
+			gunTransform.FindChild("Model").animation.CrossFade("Reload", 0.25); // Plays reload animation, which in turns triggers the reload
 	
 	
 		// Zoom
@@ -138,9 +151,9 @@ function Update ()
 	
 	
 	/* Animation */
-	if (!gunTransform.FindChild("Model").animation["Fire"].enabled && !sprinting) // If no animation is playing, play Idle
+	if (!gunTransform.FindChild("Model").animation["Fire"].enabled && !gunTransform.FindChild("Model").animation["Reload"].enabled && !sprinting) // If no animation is playing, play Idle
 	{
-		gunTransform.FindChild("Model").animation.CrossFade("Idle", 0.5);
+			gunTransform.FindChild("Model").animation.CrossFade("Idle", 0.5);
 	}
 
 }
