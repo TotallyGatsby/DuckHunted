@@ -1,5 +1,13 @@
 #pragma strict
 
+// Movement Stuff
+var defaultSpeed = 6;
+var defaultAcceleration = 20;
+var sprintSpeed = 12;
+var sprintAcceleration = 40;
+
+var sprinting = false;
+
 // Gun stuff
 var gunZoomSpeed = 15; // How fast you pull up the iron sight
 var defaultSensitivity = 10; // Standard sensitivity
@@ -38,62 +46,84 @@ function Update ()
 	Screen.lockCursor = true; // Captures the mouse cursor
 	
 	/* Movement */
-	//if (Input.GetButtonDown("Sprint"))
-	//{
-		//characterMotor.
-	//}
+	
+	// Sprint
+	if (Input.GetButtonDown("Sprint"))
+	{
+		sprinting = true;
+		characterMotor.movement.maxForwardSpeed = sprintSpeed;
+		characterMotor.movement.maxSidewaysSpeed = defaultSpeed / 2;
+		characterMotor.movement.maxBackwardsSpeed = 0;
+		characterMotor.movement.maxGroundAcceleration = sprintAcceleration;
+		gunTransform.FindChild("Model").animation.CrossFade("Run", 0.25);
+		
+	}
+	else if (Input.GetButtonUp("Sprint"))
+	{
+		sprinting = false;
+		characterMotor.movement.maxForwardSpeed = defaultSpeed;
+		characterMotor.movement.maxSidewaysSpeed = defaultSpeed;
+		characterMotor.movement.maxBackwardsSpeed = defaultSpeed;
+		characterMotor.movement.maxGroundAcceleration = defaultAcceleration;
+	}
 
 	/* Gun Stuff */
 	
 	// Fire
-	if (Input.GetButtonDown("Fire1") && !gunTransform.FindChild("Model").animation.isPlaying)
+	if (!sprinting) // Can't fire or zoom while sprinting
 	{
-		gunTransform.FindChild("Model").animation.Play("Fire"); // Play firing animation, which in turns activates muzzle flash and gun sound
-		
-		// Raycasting
-		var fireRayPos = Vector3(transform.position.x, transform.position.y+0.8, transform.position.z+0.5);
-		
-		var fireRay = new Ray(fireRayPos, transform.forward);
-		var fireRayHit : RaycastHit;
-		Debug.DrawRay (fireRay.origin, transform.forward, Color.blue, 1);
-		if (Physics.Raycast (fireRay, fireRayHit, 10000000))
+		if (Input.GetButtonDown("Fire1") && !gunTransform.FindChild("Model").animation["Fire"].enabled)
 		{
-			Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
-			if (fireRayHit.collider.CompareTag("Enemy"))
+			gunTransform.FindChild("Model").animation.Play("Fire"); // Play firing animation, which in turns activates muzzle flash and gun sound
+			
+			// Raycasting
+			var fireRay = new Ray(Camera.mainCamera.transform.position, transform.forward);
+			var fireRayHit : RaycastHit;
+			Debug.DrawRay (fireRay.origin, transform.forward, Color.blue, 1);
+			if (Physics.Raycast (fireRay, fireRayHit, 10000))
 			{
-				Debug.Log("Hit " + fireRayHit.collider.gameObject.name);		
-				fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
-				fireRayHit.collider.gameObject.SendMessage("ApplyDamage", gunDamage);
+				Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
+				if (fireRayHit.collider.CompareTag("Enemy"))
+				{
+					fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
+					fireRayHit.collider.gameObject.SendMessage("ApplyDamage", gunDamage);
+				}
 			}
+			//
 		}
-		//
-	}
 	
 	
-	// Zoom
-	if (Input.GetButtonDown("Fire2"))
-	{
-		gunZoom = true;
-	}
-
-	else if (Input.GetButtonUp("Fire2"))
-		gunZoom = false;
+		// Zoom
+		if (Input.GetButtonDown("Fire2"))
+		{
+			gunTransform.FindChild("Model").animation.Stop();
+			gunZoom = true;
+		}
 	
-	if (gunZoom == true)
-	{
-		gunTransform.localPosition = Vector3.Lerp(gunTransform.localPosition, gunZoomPosition, Time.deltaTime*gunZoomSpeed);
-		gunTransform.localEulerAngles.y = Mathf.LerpAngle(gunTransform.localEulerAngles.y, gunZoomRotation.y, Time.deltaTime*gunZoomSpeed);
-		Camera.mainCamera.fov = Mathf.Lerp(Camera.mainCamera.fov, 30, Time.deltaTime*gunZoomSpeed);
-		mouseLookScript.sensitivityX = defaultSensitivity/zoomSensitivitySlowFactor;
-		mouseLookScript.sensitivityY = defaultSensitivity/zoomSensitivitySlowFactor;
-	}
-	else if (gunZoom == false)
-	{
-		gunTransform.localPosition = Vector3.Lerp(gunTransform.localPosition, gunDefaultPosition, Time.deltaTime*gunZoomSpeed); 
-		gunTransform.localEulerAngles.y = Mathf.LerpAngle(gunTransform.localEulerAngles.y, gunDefaultRotation.y, Time.deltaTime*gunZoomSpeed);
-		Camera.mainCamera.fov = Mathf.Lerp(Camera.mainCamera.fov, 60, Time.deltaTime*gunZoomSpeed);
-		mouseLookScript.sensitivityX = defaultSensitivity;
-		mouseLookScript.sensitivityY = defaultSensitivity;
+		else if (Input.GetButtonUp("Fire2"))
+			gunZoom = false;
+		
+		if (gunZoom == true)
+		{
+			gunTransform.localPosition = Vector3.Lerp(gunTransform.localPosition, gunZoomPosition, Time.deltaTime*gunZoomSpeed);
+			gunTransform.localEulerAngles.y = Mathf.LerpAngle(gunTransform.localEulerAngles.y, gunZoomRotation.y, Time.deltaTime*gunZoomSpeed);
+			Camera.mainCamera.fov = Mathf.Lerp(Camera.mainCamera.fov, 30, Time.deltaTime*gunZoomSpeed);
+			
+			// Adjust sensitivity when zoomed in
+			mouseLookScript.sensitivityX = defaultSensitivity/zoomSensitivitySlowFactor;
+			mouseLookScript.sensitivityY = defaultSensitivity/zoomSensitivitySlowFactor;
+			
+		}
+		else if (gunZoom == false)
+		{
+			gunTransform.localPosition = Vector3.Lerp(gunTransform.localPosition, gunDefaultPosition, Time.deltaTime*gunZoomSpeed); 
+			gunTransform.localEulerAngles.y = Mathf.LerpAngle(gunTransform.localEulerAngles.y, gunDefaultRotation.y, Time.deltaTime*gunZoomSpeed);
+			Camera.mainCamera.fov = Mathf.Lerp(Camera.mainCamera.fov, 60, Time.deltaTime*gunZoomSpeed);
+			
+			// Reset sensitivity when zooming out
+			mouseLookScript.sensitivityX = defaultSensitivity;
+			mouseLookScript.sensitivityY = defaultSensitivity;
+		}
 	}
 	
 	/* Flashlight */
@@ -104,5 +134,10 @@ function Update ()
 		flashlightTransform.GetComponent(Light).active = true;
 	else if (flashlightOn == false)
 		flashlightTransform.GetComponent(Light).active = false;
+		
+	if (!gunTransform.FindChild("Model").animation["Fire"].enabled && !gunZoom && !sprinting) // If no animation is playing, play Idle
+	{
+		gunTransform.FindChild("Model").animation.CrossFade("Idle", 0.5);
+	}
 
 }
