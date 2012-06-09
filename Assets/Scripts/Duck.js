@@ -1,10 +1,17 @@
 #pragma strict
 
 var health:float = 10.0;
-var speed: float = .25;
+var speed: float = .15;
+
+var stunLength:float = 1.0;
+
 // Min and Max distance the duck will fly near the player
 var minDistance: float = 10;
 var maxDistance: float = 20;
+
+// Min and max height the duck will fly
+var minFlight: float = 2;
+var maxFlight: float = 6;
 
 // Where this duck wants to fly
 @System.NonSerialized
@@ -12,6 +19,9 @@ var targetPos:Vector3;
 @System.NonSerialized
 var startPos:Vector3;
 
+// Number of living ducks
+@System.NonSerialized
+static var duckCount:int = 0;
 
 // How far along our lerp path we are
 @System.NonSerialized
@@ -21,14 +31,26 @@ var lerpAmount:float;
 @System.NonSerialized
 var stunTime:float;
 
-function Start () {
+// Is dis duckie dead?
+@System.NonSerialized
+var isDead = false;
 
+function Start () {
+	duckCount++;
+	Debug.Log(duckCount);
 }
 
 function Update () {
+	
+	if (isDead){
+		return;
+	}
+	
     // If dead, just lie there like a lump. A duck lump
-	if (health <= 0){
+	if (health <= 0 && !isDead){
 		rigidbody.useGravity = true;
+		duckCount--;
+		isDead = true;
 	} 
 	else if (stunTime > 0)
 	{
@@ -53,11 +75,11 @@ function Update () {
 			unitTarget += GameObject.Find("Player").transform.position;
 			
 			// Ensure we always have a positive y value and it never gets too high or low
-			unitTarget.y = Mathf.Clamp(Mathf.Abs(unitTarget.y), 2, 10);
+			unitTarget.y = Mathf.Clamp(Mathf.Abs(unitTarget.y), minFlight, maxFlight);
 			
 			targetPos = unitTarget;
-			transform.LookAt(targetPos);
 		}
+		transform.LookAt(targetPos);
 		lerpAmount += Time.deltaTime * speed;
 		// Move along our path
 		transform.position = Vector3.Lerp(startPos, targetPos, lerpAmount);
@@ -66,7 +88,8 @@ function Update () {
 
 
 function ApplyDamage(amount: float){
-	stunTime = .5;
+	Debug.Log("hit" + gameObject.name);
+	stunTime = stunLength;
 	targetPos = Vector3.one;
 	health -= amount;
 }
