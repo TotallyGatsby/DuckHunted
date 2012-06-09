@@ -39,8 +39,9 @@ function Update ()
 	// Fire
 	if (Input.GetButtonDown("Fire1") && !gunTransform.FindChild("Model").animation.isPlaying)
 	{
-		gunTransform.FindChild("Model").animation.Play("Fire");
+		gunTransform.FindChild("Model").animation.Play("Fire"); // Play firing animation, which in turns activates muzzle flash and gun sound
 		
+		// Raycasting
 		var fireRayPos = Vector3(transform.position.x, transform.position.y+0.8, transform.position.z+0.5);
 		
 		var fireRay = new Ray(fireRayPos, transform.forward);
@@ -54,6 +55,7 @@ function Update ()
 				fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
 			}
 		}
+		//
 	}
 	
 	
