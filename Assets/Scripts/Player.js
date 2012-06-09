@@ -32,11 +32,21 @@ function Start ()
 
 function Update () 
 {
+	Screen.lockCursor = true; // Captures the mouse cursor
 
 	/* Gun Stuff */
+	
+	// Fire
+	if (Input.GetButtonDown("Fire1"))
+	{
+		gunTransform.FindChild("Model").animation.Play("Fire");
+	}
+	
 	// Zoom
 	if (Input.GetButtonDown("Fire2"))
+	{
 		gunZoom = true;
+	}
 
 	else if (Input.GetButtonUp("Fire2"))
 		gunZoom = false;
