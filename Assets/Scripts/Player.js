@@ -19,6 +19,8 @@ var gunZoomPosition : Vector3 = Vector3(0, -0.15, 0.85); // Zoomed in Position &
 var gunZoomRotation : Vector3 = Vector3(0, 90, 0); // Rotation of gun
 var gunZoom = false; // Whatever the gun is zoomed in or not
 
+var hitParticleSystemPrefab : Transform; // Prefab for Bullet Hit Particle system
+
 var gunTransform : Transform;
 
 public var bullets = 3;
@@ -86,6 +88,9 @@ function Update ()
 				if (Physics.Raycast (fireRay, fireRayHit, 1000000))
 				{
 					Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
+					
+					Instantiate(hitParticleSystemPrefab, fireRayHit.point, Quaternion.identity);
+					
 					if (fireRayHit.collider.CompareTag("Enemy"))
 					{
 						fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
