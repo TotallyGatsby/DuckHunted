@@ -37,10 +37,25 @@ function Update ()
 	/* Gun Stuff */
 	
 	// Fire
-	if (Input.GetButtonDown("Fire1"))
+	if (Input.GetButtonDown("Fire1") && !gunTransform.FindChild("Model").animation.isPlaying)
 	{
 		gunTransform.FindChild("Model").animation.Play("Fire");
+		
+		var fireRayPos = Vector3(transform.position.x, transform.position.y+0.8, transform.position.z+0.5);
+		
+		var fireRay = new Ray(fireRayPos, transform.forward);
+		var fireRayHit : RaycastHit;
+		Debug.DrawRay (fireRay.origin, transform.forward, Color.blue, 1);
+		if (Physics.Raycast (fireRay, fireRayHit, 10000000))
+		{
+			Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
+			if (fireRayHit.collider.CompareTag("Enemy"))
+			{
+				fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
+			}
+		}
 	}
+	
 	
 	// Zoom
 	if (Input.GetButtonDown("Fire2"))
