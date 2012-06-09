@@ -94,6 +94,8 @@ function Update ()
 		// Zoom
 		if (Input.GetButtonDown("Fire2"))
 		{
+			//if (gunTransform.FindChild("Model").animation["Idle"].enabled)
+				//gunTransform.FindChild("Model").animation.Stop();
 			gunZoom = true;
 		}
 	
@@ -133,8 +135,10 @@ function Update ()
 		flashlightTransform.GetComponent(Light).active = true;
 	else if (flashlightOn == false)
 		flashlightTransform.GetComponent(Light).active = false;
-		
-	if (!gunTransform.FindChild("Model").animation["Fire"].enabled && !gunZoom && !sprinting) // If no animation is playing, play Idle
+	
+	
+	/* Animation */
+	if (!gunTransform.FindChild("Model").animation["Fire"].enabled && !sprinting) // If no animation is playing, play Idle
 	{
 		gunTransform.FindChild("Model").animation.CrossFade("Idle", 0.5);
 	}
