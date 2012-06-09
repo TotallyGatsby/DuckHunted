@@ -79,7 +79,7 @@ function Update ()
 			var fireRay = new Ray(Camera.mainCamera.transform.position, transform.forward);
 			var fireRayHit : RaycastHit;
 			Debug.DrawRay (fireRay.origin, transform.forward, Color.blue, 1);
-			if (Physics.Raycast (fireRay, fireRayHit, 10000))
+			if (Physics.Raycast (fireRay, fireRayHit, 1000000))
 			{
 				Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
 				if (fireRayHit.collider.CompareTag("Enemy"))
@@ -94,7 +94,6 @@ function Update ()
 		// Zoom
 		if (Input.GetButtonDown("Fire2"))
 		{
-			gunTransform.FindChild("Model").animation.Stop();
 			gunZoom = true;
 		}
 	
@@ -105,6 +104,7 @@ function Update ()
 		{
 			gunTransform.localPosition = Vector3.Lerp(gunTransform.localPosition, gunZoomPosition, Time.deltaTime*gunZoomSpeed);
 			gunTransform.localEulerAngles.y = Mathf.LerpAngle(gunTransform.localEulerAngles.y, gunZoomRotation.y, Time.deltaTime*gunZoomSpeed);
+			gunTransform.localEulerAngles.z = Mathf.LerpAngle(gunTransform.localEulerAngles.z, gunZoomRotation.z, Time.deltaTime*gunZoomSpeed);
 			Camera.mainCamera.fov = Mathf.Lerp(Camera.mainCamera.fov, 30, Time.deltaTime*gunZoomSpeed);
 			
 			// Adjust sensitivity when zoomed in
@@ -116,6 +116,7 @@ function Update ()
 		{
 			gunTransform.localPosition = Vector3.Lerp(gunTransform.localPosition, gunDefaultPosition, Time.deltaTime*gunZoomSpeed); 
 			gunTransform.localEulerAngles.y = Mathf.LerpAngle(gunTransform.localEulerAngles.y, gunDefaultRotation.y, Time.deltaTime*gunZoomSpeed);
+			gunTransform.localEulerAngles.z = Mathf.LerpAngle(gunTransform.localEulerAngles.z, gunDefaultRotation.z, Time.deltaTime*gunZoomSpeed);
 			Camera.mainCamera.fov = Mathf.Lerp(Camera.mainCamera.fov, 60, Time.deltaTime*gunZoomSpeed);
 			
 			// Reset sensitivity when zooming out
