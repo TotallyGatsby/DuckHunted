@@ -11,6 +11,7 @@ var gunZoomPosition : Vector3 = Vector3(0, -0.15, 0.85); // Zoomed in Position &
 var gunZoomRotation : Vector3 = Vector3(0, 90, 0); // Rotation of gun
 var gunZoom = false; // Whatever the gun is zoomed in or not
 
+var gunDamage = 5.0;
 var gunTransform : Transform; 
 
 // Flashlight
@@ -60,7 +61,9 @@ function Update ()
 			Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
 			if (fireRayHit.collider.CompareTag("Enemy"))
 			{
+				Debug.Log("Hit " + fireRayHit.collider.gameObject.name);		
 				fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
+				fireRayHit.collider.gameObject.SendMessage("ApplyDamage", gunDamage);
 			}
 		}
 		//
