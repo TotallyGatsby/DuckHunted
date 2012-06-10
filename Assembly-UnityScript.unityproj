@@ -46,7 +46,9 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Duck.js" />
      <Compile Include="Assets\Scripts\DuckSpawner.js" />
+     <Compile Include="Assets\Scripts\GUIBullet.js" />
      <Compile Include="Assets\Scripts\Player.js" />
+     <Compile Include="Assets\Scripts\RifleAnimationEvents.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">

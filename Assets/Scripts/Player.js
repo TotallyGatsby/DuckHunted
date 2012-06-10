@@ -20,7 +20,11 @@ var gunZoomRotation : Vector3 = Vector3(0, 90, 0); // Rotation of gun
 var gunZoom = false; // Whatever the gun is zoomed in or not
 
 var gunDamage = 5.0;
-var gunTransform : Transform; 
+var hitParticleSystemPrefab : Transform; // Prefab for Bullet Hit Particle system
+
+var gunTransform : Transform;
+
+public var bullets = 3;
 
 // Flashlight
 var flashlightOn = false; // Whatever the flashlight is on or not
@@ -72,31 +76,46 @@ function Update ()
 	// Fire
 	if (!sprinting) // Can't fire or zoom while sprinting
 	{
-		if (Input.GetButtonDown("Fire1") && !gunTransform.FindChild("Model").animation["Fire"].enabled)
+		if (Input.GetButtonDown("Fire1") && !gunTransform.FindChild("Model").animation["Fire"].enabled && !gunTransform.FindChild("Model").animation["Reload"].enabled)
 		{
-			gunTransform.FindChild("Model").animation.Play("Fire"); // Play firing animation, which in turns activates muzzle flash and gun sound
-			
-			// Raycasting
-			var fireRay = new Ray(Camera.mainCamera.transform.position, transform.forward);
-			var fireRayHit : RaycastHit;
-			Debug.DrawRay (fireRay.origin, transform.forward, Color.blue, 1);
-			if (Physics.Raycast (fireRay, fireRayHit, 10000))
+			if (bullets > 0)
 			{
-				Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
-				if (fireRayHit.collider.CompareTag("Enemy"))
+				gunTransform.FindChild("Model").animation.Play("Fire"); // Play firing animation, which in turns activates muzzle flash and gun sound
+				
+				// Raycasting
+				var fireRay = new Ray(Camera.mainCamera.transform.position, transform.forward);
+				var fireRayHit : RaycastHit;
+				Debug.DrawRay (fireRay.origin, transform.forward, Color.blue, 1);
+				if (Physics.Raycast (fireRay, fireRayHit, 1000000))
 				{
-					fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
+					Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
+					
+					Instantiate(hitParticleSystemPrefab, fireRayHit.point, Quaternion.identity);
+					
+					if (fireRayHit.collider.CompareTag("Enemy"))
+					{
+						fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
 					fireRayHit.collider.gameObject.SendMessage("ApplyDamage", gunDamage);
+					}
 				}
+				//
+				
+				bullets -= 1; // Subtract bullet
 			}
-			//
+			else // Auto Reload
+				gunTransform.FindChild("Model").animation.CrossFade("Reload", 0.25); // Plays reload animation, which in turns triggers the reload
 		}
+		
+		// Manual Reload
+		if (Input.GetButtonDown("Reload"))
+			gunTransform.FindChild("Model").animation.CrossFade("Reload", 0.25); // Plays reload animation, which in turns triggers the reload
 	
 	
 		// Zoom
 		if (Input.GetButtonDown("Fire2"))
 		{
-			gunTransform.FindChild("Model").animation.Stop();
+			//if (gunTransform.FindChild("Model").animation["Idle"].enabled)
+				//gunTransform.FindChild("Model").animation.Stop();
 			gunZoom = true;
 		}
 	
@@ -107,6 +126,7 @@ function Update ()
 		{
 			gunTransform.localPosition = Vector3.Lerp(gunTransform.localPosition, gunZoomPosition, Time.deltaTime*gunZoomSpeed);
 			gunTransform.localEulerAngles.y = Mathf.LerpAngle(gunTransform.localEulerAngles.y, gunZoomRotation.y, Time.deltaTime*gunZoomSpeed);
+			gunTransform.localEulerAngles.z = Mathf.LerpAngle(gunTransform.localEulerAngles.z, gunZoomRotation.z, Time.deltaTime*gunZoomSpeed);
 			Camera.mainCamera.fov = Mathf.Lerp(Camera.mainCamera.fov, 30, Time.deltaTime*gunZoomSpeed);
 			
 			// Adjust sensitivity when zoomed in
@@ -118,6 +138,7 @@ function Update ()
 		{
 			gunTransform.localPosition = Vector3.Lerp(gunTransform.localPosition, gunDefaultPosition, Time.deltaTime*gunZoomSpeed); 
 			gunTransform.localEulerAngles.y = Mathf.LerpAngle(gunTransform.localEulerAngles.y, gunDefaultRotation.y, Time.deltaTime*gunZoomSpeed);
+			gunTransform.localEulerAngles.z = Mathf.LerpAngle(gunTransform.localEulerAngles.z, gunDefaultRotation.z, Time.deltaTime*gunZoomSpeed);
 			Camera.mainCamera.fov = Mathf.Lerp(Camera.mainCamera.fov, 60, Time.deltaTime*gunZoomSpeed);
 			
 			// Reset sensitivity when zooming out
@@ -135,9 +156,12 @@ function Update ()
 	else if (flashlightOn == false)
 		flashlightTransform.GetComponent(Light).active = false;
 		
-	if (!gunTransform.FindChild("Model").animation["Fire"].enabled && !gunZoom && !sprinting) // If no animation is playing, play Idle
+	/* Animation */
+	if (!gunTransform.FindChild("Model").animation["Fire"].enabled && 
+		!gunTransform.FindChild("Model").animation["Reload"].enabled && 
+		!sprinting) // If no animation is playing, play Idle
 	{
-		gunTransform.FindChild("Model").animation.CrossFade("Idle", 0.5);
+			gunTransform.FindChild("Model").animation.CrossFade("Idle", 0.5);
 	}
 
 }
