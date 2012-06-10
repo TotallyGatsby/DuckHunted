@@ -1,13 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Duck.js">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\DuckSpawner.js">
     <Files>
-      <File FileName="Assets\Scripts\Duck.js" Line="21" Column="22" />
+      <File FileName="Assets\Scripts\Duck.js" Line="29" Column="22" />
       <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\MouseLook.cs" Line="1" Column="1" />
       <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\CharacterMotor.js" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Player.js" Line="1" Column="1" />
       <File FileName="Assets\Standard Assets\Character Controllers\Sources\Scripts\ThirdPersonController.js" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\DuckSpawner.js" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\DuckSpawner.js" Line="27" Column="56" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
