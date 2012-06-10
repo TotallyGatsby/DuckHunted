@@ -24,7 +24,7 @@ var quackTime: float = 2;
 
 // Where this duck wants to fly
 @System.NonSerialized
-var targetPos:Vector3;
+var targetPos:Vector3 = Vector3.one;
 @System.NonSerialized
 var startPos:Vector3;
 
