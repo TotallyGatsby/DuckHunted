@@ -4,6 +4,7 @@ ModelImporter:
   fileIDToRecycleName:
     4300000: Cube
     7400000: Default Take //// Duck
+    7400002: Default Take //// Armature
   serializedVersion: 10
   materials:
     importMaterials: 1

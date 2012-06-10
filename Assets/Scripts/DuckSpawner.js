@@ -1,9 +1,11 @@
 #pragma strict
 
 
-var spawnPrefab:UnityEngine.GameObject;
+var spawnPrefab:Transform[]; // 0 - Green Duck. 1 - Blue Duck. 2 - Red Duck
 var maxDucks:int = 3;
 var noSpawnRadius:float = 3;
+
+private var duckType;
 
 function Start () {
 
@@ -23,7 +25,18 @@ function Update () {
 			var spawnPos:Vector3 = pTransform.position - (pTransform.forward * 10.0);
 			spawnPos.y = 5;
 			
-			Instantiate(spawnPrefab, spawnPos, Quaternion.identity);
+			// Pick a random duck! (Heavily weighted towards a green duck)
+			var randomRange = Random.Range(0, 100);
+			if (randomRange >= 20)
+				duckType = 0;
+			else if (randomRange > 3 && randomRange < 20)
+				duckType = 1;
+			else
+				duckType = 2;
+				
+			Debug.Log(randomRange);
+				
+			Instantiate(spawnPrefab[duckType], spawnPos, Quaternion.identity);
 			gameObject.transform.position = pTransform.position;
 		}
 	}

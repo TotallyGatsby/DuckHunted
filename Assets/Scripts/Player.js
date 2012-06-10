@@ -152,9 +152,9 @@ function Update ()
 		flashlightOn = !flashlightOn; // Switch flashlight on/off
 		
 	if (flashlightOn == true)
-		flashlightTransform.GetComponent(Light).active = true;
+		flashlightTransform.GetComponent(Light).light.enabled = true;
 	else if (flashlightOn == false)
-		flashlightTransform.GetComponent(Light).active = false;
+		flashlightTransform.GetComponent(Light).light.enabled = false;
 		
 	/* Animation */
 	if (!gunTransform.FindChild("Model").animation["Fire"].enabled && 

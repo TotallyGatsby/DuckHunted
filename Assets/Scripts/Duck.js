@@ -3,6 +3,10 @@
 var health:float = 10.0;
 var speed: float = .15;
 
+// Min and Max scale
+var minScale: float = 1;
+var maxScale: float = 1;
+
 var stunLength:float = 1.0;
 
 // Min and Max distance the duck will fly near the player
@@ -44,9 +48,20 @@ var stunTime:float;
 @System.NonSerialized
 var isDead = false;
 
+private var model : Transform;
+
 function Start () {
+	model = transform.FindChild("Model");
 	duckCount++;
 	Debug.Log(duckCount);
+	
+	// Set scale
+	var scale = Random.Range(minScale, maxScale);
+	transform.localScale = Vector3(scale, scale, scale);
+	
+	// Animation Layers
+	model.animation["Quack"].layer = 1;
+	model.animation.Stop();
 }
 
 function Update () {
@@ -91,10 +106,12 @@ function Update () {
 		quackTime -= Time.deltaTime;
 		
 		if (quackTime < 0){
-			
+			transform.FindChild("Model").animation.Play("Quack");
 			audio.Play(0);
 			quackTime += Random.Range(minQuack, maxQuack);
 		}
+		else
+			transform.FindChild("Model").animation.Play("Flap"); // Flap those wings
 		
 		transform.LookAt(targetPos);
 		lerpAmount += Time.deltaTime * speed;
