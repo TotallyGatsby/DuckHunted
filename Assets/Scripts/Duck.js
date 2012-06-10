@@ -13,6 +13,15 @@ var maxDistance: float = 20;
 var minFlight: float = 2;
 var maxFlight: float = 6;
 
+// Min and Max times between quacks
+// TODO: Move this to a specialized component?
+var minQuack: float = 1;
+var maxQuack: float = 5;
+
+// Current quacktimer
+@System.NonSerialized
+var quackTime: float = 2;
+
 // Where this duck wants to fly
 @System.NonSerialized
 var targetPos:Vector3;
@@ -79,6 +88,13 @@ function Update () {
 			
 			targetPos = unitTarget;
 		}
+		quackTime -= Time.deltaTime;
+		
+		if (quackTime < 0){
+			audio.Play(0);
+			quackTime += Random.Range(minQuack, maxQuack);
+		}
+		
 		transform.LookAt(targetPos);
 		lerpAmount += Time.deltaTime * speed;
 		// Move along our path
