@@ -91,6 +91,7 @@ function Update () {
 		quackTime -= Time.deltaTime;
 		
 		if (quackTime < 0){
+			
 			audio.Play(0);
 			quackTime += Random.Range(minQuack, maxQuack);
 		}
