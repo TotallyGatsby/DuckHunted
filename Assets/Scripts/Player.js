@@ -95,7 +95,7 @@ function Update ()
 					if (fireRayHit.collider.CompareTag("Enemy"))
 					{
 						fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
-					fireRayHit.collider.gameObject.SendMessage("ApplyDamage", gunDamage);
+						fireRayHit.collider.gameObject.SendMessage("ApplyDamage", gunDamage);
 					}
 				}
 				//
@@ -114,8 +114,6 @@ function Update ()
 		// Zoom
 		if (Input.GetButtonDown("Fire2"))
 		{
-			//if (gunTransform.FindChild("Model").animation["Idle"].enabled)
-				//gunTransform.FindChild("Model").animation.Stop();
 			gunZoom = true;
 		}
 	

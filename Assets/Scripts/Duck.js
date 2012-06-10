@@ -47,6 +47,10 @@ var stunTime:float;
 // Is dis duckie dead?
 @System.NonSerialized
 var isDead = false;
+var hasPlayedThud = false;
+var fallClip : AudioClip;
+var thudClip : AudioClip;
+
 
 private var model : Transform;
 
@@ -67,6 +71,22 @@ function Start () {
 function Update () {
 	
 	if (isDead){
+		
+		if (hasPlayedThud == false)
+		{
+			var groundRay = new Ray(transform.position, Vector3.down);
+			var groundRayHit : RaycastHit;
+			if (Physics.Raycast (groundRay, groundRayHit, 1))
+			{
+				Debug.DrawLine (groundRay.origin, groundRayHit.point, Color.red, 1);
+				audio.clip = thudClip;
+				audio.Play(0);
+				audio.pitch = 1;
+				hasPlayedThud = true;
+			}
+		}
+		
+		
 		return;
 	}
 	
@@ -74,6 +94,12 @@ function Update () {
 	if (health <= 0 && !isDead){
 		rigidbody.useGravity = true;
 		duckCount--;
+		
+		transform.localEulerAngles = Vector3(90, 0, 0);
+		audio.clip = fallClip;
+		audio.Play(0.25);
+		audio.pitch = 1;
+		
 		isDead = true;
 	} 
 	else if (stunTime > 0)
@@ -122,8 +148,12 @@ function Update () {
 
 
 function ApplyDamage(amount: float){
-	Debug.Log("hit" + gameObject.name);
 	stunTime = stunLength;
+	
+	transform.FindChild("Model").animation.Play("Quack");
+	audio.Play(0);
+	quackTime += Random.Range(minQuack, maxQuack);
+	
 	targetPos = Vector3.one;
 	health -= amount;
 }
