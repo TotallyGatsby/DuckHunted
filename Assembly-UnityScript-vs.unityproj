@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\GUIBullet.js" />
      <Compile Include="Assets\Scripts\Player.js" />
      <Compile Include="Assets\Scripts\RifleAnimationEvents.js" />
+     <Compile Include="Assets\Scripts\TheDog.js" />
  <Reference Include="Assembly-UnityScript-firstpass">
  <HintPath>Library\ScriptAssemblies\Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>
