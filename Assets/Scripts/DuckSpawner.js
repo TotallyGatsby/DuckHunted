@@ -7,8 +7,11 @@ var noSpawnRadius:float = 3;
 
 private var duckType;
 
-function Start () {
+@System.NonSerialized
+static var ducks = new Array();
 
+function Start () {
+	
 }
 
 function Update () {
@@ -34,9 +37,9 @@ function Update () {
 			else
 				duckType = 2;
 				
-			Debug.Log(randomRange);
-				
-			Instantiate(spawnPrefab[duckType], spawnPos, Quaternion.identity);
+			
+			var clone:Transform = Instantiate(spawnPrefab[duckType], spawnPos, Quaternion.identity);
+			ducks.Push(clone);
 			gameObject.transform.position = pTransform.position;
 		}
 	}

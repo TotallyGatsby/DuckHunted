@@ -57,7 +57,6 @@ private var model : Transform;
 function Start () {
 	model = transform.FindChild("Model");
 	duckCount++;
-	Debug.Log(duckCount);
 	
 	// Set scale
 	var scale = Random.Range(minScale, maxScale);
