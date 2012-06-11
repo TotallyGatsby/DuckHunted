@@ -9,6 +9,8 @@ var zigTimer:float;
 @System.NonSerialized
 var isZigging = false;
 
+@System.NonSerialized
+var behaviorState:DogBehavior;
 
 // How long before the dog changes directions
 var maxZigTime:float = 25;
@@ -28,46 +30,26 @@ var playerScentRadius:float = 10; // How far away the dog can sense the player's
 function Start () {
 	player = GameObject.Find("Player");
 	zigTimer = Random.Range(minZigTime, maxZigTime);
+	setBehavior(new DogHuntPlayer());
 }
 
 function Update () {
-	var diff = player.transform.position - transform.position;
+	behaviorState.checkState();
 	
-	// This should give us a vector that is tangential to the player
-	var move = Vector3.Normalize(Vector3.Cross(diff, Vector3.up));
-	
-	if (isZigging){
-		move *= -1;
-		move = Quaternion.Euler(0,-huntStrength,0) * move;	
-	}
-	else {
-		move = Quaternion.Euler(0,huntStrength,0) * move;	
-	}
-	
-	// Make sure we don't start flying
-	move.y = 0;
-	move = move * speed * Time.deltaTime;
+	var move = behaviorState.getMove();
 	
 	Debug.DrawLine(transform.position, transform.position+move, Color.green, 1);
 	transform.position += move;
-	
-	speed += huntAcceleration * Time.deltaTime;
-	
-	zigTimer -= Time.deltaTime;
-	
-	if (zigTimer < 0){
-		zigTimer = Random.Range(minZigTime, maxZigTime);
-		isZigging = !isZigging;
-	}
-	
-	if (speed > maxSpeed){
-		speed = maxSpeed;
-	}
-	
+
 	if (Vector3.Distance(transform.position, player.transform.position) < playerScentRadius &&
 		!audio.isPlaying){
 		audio.Play(0);
 	}
+}
+
+function setBehavior(behavior:DogBehavior){
+	behaviorState = behavior;
+	behavior.owner = this;
 }
 
 function OnDrawGizmos(){
