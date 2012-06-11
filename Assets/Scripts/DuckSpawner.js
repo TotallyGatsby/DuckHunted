@@ -37,7 +37,6 @@ function Update () {
 			else
 				duckType = 2;
 				
-			Debug.Log(randomRange);
 			
 			var clone:Transform = Instantiate(spawnPrefab[duckType], spawnPos, Quaternion.identity);
 			ducks.Push(clone);

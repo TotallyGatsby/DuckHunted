@@ -20,6 +20,7 @@ class DogBehavior{
 
 // Spirals around the player
 // Transitions to: 
+//     DogPrepareToAttack -- If it senses the player
 //     DogGetDuck -- If it senses a dead duck
 class DogHuntPlayer extends DogBehavior{
 	function getMove(){
@@ -56,6 +57,21 @@ class DogHuntPlayer extends DogBehavior{
 	}
 	
 	function checkState(){
+		// Look for the player
+		if (Vector3.Distance(owner.transform.position, owner.player.transform.position) < owner.playerScentRadius){
+			// Only pounce if we're behind the player
+			var diff = owner.transform.position - owner.player.transform.position;
+			
+			// Dot product of the heading of the player and the player->dog vector
+			// will be negative if the dog is behind the player
+			var dot:float = Vector3.Dot(diff, owner.player.transform.forward);
+			
+			if (dot < 0){
+				owner.setBehavior(new DogPrepareToAttack());
+				return;
+			}
+		}
+		
 		// Look for some dead ducks (Shhh... they're just sleeping!)
 		for (var i = 0; i < DuckSpawner.ducks.length; i++){
 			var duck = (DuckSpawner.ducks[i] as Transform).gameObject;
@@ -97,7 +113,7 @@ class DogGetDuck extends DogBehavior{
 	}
 	
 	function checkState(){
-		if (Vector3.Distance(owner.transform.position, target.transform.position) < 1.0){
+		if (Vector3.Distance(owner.transform.position, target.transform.position) < 1.8){
 			owner.setBehavior(new DogPresentDuck(targetIndex));
 		}
 	}
@@ -108,6 +124,9 @@ class DogGetDuck extends DogBehavior{
 	}
 }
 
+// The dog has caught up to the duck, time to feast!
+// Transitions to:
+//    DogHuntPlayer -- Once it's done eating, time to get back to the hunt
 class DogPresentDuck extends DogBehavior{
 	var target:GameObject;
 	var targetIndex:int;
@@ -137,6 +156,60 @@ class DogPresentDuck extends DogBehavior{
 			owner.setBehavior(new DogHuntPlayer());
 			DuckSpawner.ducks.RemoveAt(targetIndex);
 			UnityEngine.Object.Destroy(target); // This took a while to find :(
+		}
+	}
+}
+
+// The dog pauses to pounce on the player
+class DogPrepareToAttack extends DogBehavior{
+	var soundPlayed = false;
+	var timeLeft = 1.0;
+	
+	function getMove(){
+		if(!soundPlayed){
+			soundPlayed = true;
+			owner.audio.PlayOneShot(owner.announceSound);
+		}
+		
+		timeLeft -= Time.deltaTime;
+	}
+	
+	function checkState(){
+		if (timeLeft < 0){
+			owner.setBehavior(new DogLaunch());
+		}
+	}
+}
+
+class DogLaunch extends DogBehavior{
+	var hasLaunched = false;
+	var timeLeft = 1.0;
+	
+	function getMove(){
+		if (!hasLaunched){
+			hasLaunched = true;
+			owner.rigidbody.useGravity = true;
+			var diff = owner.player.transform.position - owner.transform.position;
+			diff.y = owner.player.transform.position.y + 1;
+			
+			diff = Vector3.Normalize(diff);
+			
+			owner.rigidbody.AddForce(diff*2000);
+		}
+		else {
+			timeLeft -= Time.deltaTime;
+		}
+	}
+	
+	function checkState(){
+		if (timeLeft < 0){
+			var groundRay = new Ray(owner.transform.position, Vector3.down);
+			var groundRayHit: RaycastHit;
+			
+			if (Physics.Raycast(groundRay, groundRayHit, .5)){
+				owner.setBehavior(new DogHuntPlayer());
+				owner.rigidbody.velocity = Vector3.zero;
+			}
 		}
 	}
 }

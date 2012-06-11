@@ -21,8 +21,10 @@ var maxSpeed:float 			= 10; // Dog's maximum speed
 var huntStrength:float 		= 5; 	// How quickly the dog turns to the player
 var huntAcceleration:float 	= .25; 	// How quickly the hound speeds up
 
-// Sound clip played when the dog begins to present his trophy
+// Sound clip played when the dog begins to present his trophy duck
 var presentSound:AudioClip;
+// Sound clip played when the dog is about to pounce!
+var announceSound:AudioClip;
 
 // TODO: Maybe this is a property of ducks? So bigger ducks are easier to shoot, but aren't
 // as alluring to the dog?
@@ -43,11 +45,6 @@ function Update () {
 	
 	Debug.DrawLine(transform.position, transform.position+move, Color.green, 1);
 	transform.position += move;
-
-	if (Vector3.Distance(transform.position, player.transform.position) < playerScentRadius &&
-		!audio.isPlaying){
-		audio.Play(0);
-	}
 }
 
 function setBehavior(behavior:DogBehavior){

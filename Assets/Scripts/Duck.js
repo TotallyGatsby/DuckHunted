@@ -53,7 +53,6 @@ private var model : Transform;
 function Start () {
 	model = transform.FindChild("Model");
 	duckCount++;
-	Debug.Log(duckCount);
 	
 	// Set scale
 	var scale = Random.Range(minScale, maxScale);
@@ -122,7 +121,6 @@ function Update () {
 
 
 function ApplyDamage(amount: float){
-	Debug.Log("hit" + gameObject.name);
 	stunTime = stunLength;
 	targetPos = Vector3.one;
 	health -= amount;
