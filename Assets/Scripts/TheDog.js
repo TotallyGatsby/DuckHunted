@@ -21,6 +21,9 @@ var maxSpeed:float 			= 10; // Dog's maximum speed
 var huntStrength:float 		= 5; 	// How quickly the dog turns to the player
 var huntAcceleration:float 	= .25; 	// How quickly the hound speeds up
 
+// Sound clip played when the dog begins to present his trophy
+var presentSound:AudioClip;
+
 // TODO: Maybe this is a property of ducks? So bigger ducks are easier to shoot, but aren't
 // as alluring to the dog?
 var duckScentRadius:float = 20; // How far away the dog can sense ducks
@@ -53,9 +56,7 @@ function setBehavior(behavior:DogBehavior){
 }
 
 function OnDrawGizmos(){
-	Gizmos.color = Color.blue;
-	Gizmos.DrawWireSphere(transform.position, duckScentRadius);
-	
-	Gizmos.color = Color.yellow;
-	Gizmos.DrawWireSphere(transform.position, playerScentRadius);
+	if (behaviorState != null){
+		behaviorState.drawGizmos();
+	}
 }
