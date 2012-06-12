@@ -48,9 +48,11 @@
      <Compile Include="Assets\Scripts\Duck.js" />
      <Compile Include="Assets\Scripts\DuckSpawner.js" />
      <Compile Include="Assets\Scripts\GUIBullet.js" />
+     <Compile Include="Assets\Scripts\IntroScene.js" />
      <Compile Include="Assets\Scripts\Player.js" />
      <Compile Include="Assets\Scripts\RifleAnimationEvents.js" />
      <Compile Include="Assets\Scripts\TheDog.js" />
+     <None Include="Assets\iTween\ReadMe!.txt" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">

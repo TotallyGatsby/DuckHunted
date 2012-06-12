@@ -109,24 +109,39 @@ function Update () {
 	else {
 	// Be a duck and fly around
 		// Assign a new target pos if we have hit ours already
-		if (targetPos == null || targetPos == Vector3.one || Vector3.Distance(transform.position, targetPos) < 3.0){
+		if (targetPos == null || targetPos == Vector3.one || Vector3.Distance(transform.position, targetPos) < 3.0){			
 			// Set our initial state
 			startPos = transform.position;
 		    lerpAmount = 0;
-			// Pick a random point around the player by picking a random point on a unit sphere
-			var unitTarget:Vector3 = Random.onUnitSphere;
-			
-			// Scale by some random distance from the player
-			var randScale = Random.Range(minDistance, maxDistance);
-			unitTarget *= randScale;	
-			
-			// Position the sphere over the player (since we want ducks to fly around the player)
-			unitTarget += GameObject.Find("Player").transform.position;
-			
-			// Ensure we always have a positive y value and it never gets too high or low
-			unitTarget.y = Mathf.Clamp(Mathf.Abs(unitTarget.y), minFlight, maxFlight);
-			
-			targetPos = unitTarget;
+		    
+		    var isValid = false;
+		    
+		    var attempts = 0;
+		    while (!isValid && attempts < 20){
+		    	attempts++;	
+				// Pick a random point around the player by picking a random point on a unit sphere
+				var unitTarget:Vector3 = Random.onUnitSphere;
+				
+				// Scale by some random distance from the player
+				var randScale = Random.Range(minDistance, maxDistance);
+				unitTarget *= randScale;	
+				
+				// Position the sphere over the player (since we want ducks to fly around the player)
+				unitTarget += GameObject.Find("Player").transform.position;
+				
+				// Ensure we always have a positive y value and it never gets too high or low
+				unitTarget.y = Mathf.Clamp(Mathf.Abs(unitTarget.y), minFlight, maxFlight);
+				
+				targetPos = unitTarget;
+				
+				// Raycasting
+				var fireRay = new Ray(transform.position, targetPos-transform.position);
+				var fireRayHit : RaycastHit;
+				isValid = !Physics.Raycast (fireRay, fireRayHit, 1000000);
+				if (!isValid){
+					Debug.DrawLine(transform.position, targetPos, Color.red, 0.1);
+				}
+			}
 		}
 		quackTime -= Time.deltaTime;
 		
