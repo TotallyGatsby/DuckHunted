@@ -130,8 +130,13 @@ function Update () {
 				// Position the sphere over the player (since we want ducks to fly around the player)
 				unitTarget += GameObject.Find("Player").transform.position;
 				
+				
+				// Check how high up the player is, flight target is adjusted accordingly
+				var minFlightRelative : Number = minFlight + unitTarget.y;
+				var maxFlightRelative : Number = maxFlight + unitTarget.y;
+														
 				// Ensure we always have a positive y value and it never gets too high or low
-				unitTarget.y = Mathf.Clamp(Mathf.Abs(unitTarget.y), minFlight, maxFlight);
+				unitTarget.y = Mathf.Clamp(Mathf.Abs(unitTarget.y), minFlightRelative, maxFlightRelative);
 				
 				targetPos = unitTarget;
 				
