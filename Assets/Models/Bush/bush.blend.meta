@@ -33,10 +33,10 @@ ModelImporter:
     secondaryUVHardAngle: 88
     secondaryUVPackMargin: 4
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 0
     splitTangentsAcrossUV: 1
-    normalImportMode: 0
-    tangentImportMode: 1
+    normalImportMode: 1
+    tangentImportMode: 2
   textMetaNamesToFileIDs:
     //RootNode:
       data:
