@@ -73,6 +73,7 @@ function Update () {
 		
 		if (hasPlayedThud == false)
 		{
+			transform.Rotate(Vector3(45 * Time.deltaTime, 0, 180 * Time.deltaTime));
 			var groundRay = new Ray(transform.position, Vector3.down);
 			var groundRayHit : RaycastHit;
 			if (Physics.Raycast (groundRay, groundRayHit, 1))
