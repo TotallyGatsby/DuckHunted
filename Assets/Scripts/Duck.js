@@ -2,6 +2,7 @@
 
 var health:float = 10.0;
 var speed: float = .15;
+var scoreValue = 100;
 
 // Min and Max scale
 var minScale: float = 1;
@@ -99,6 +100,8 @@ function Update () {
 		audio.clip = fallClip;
 		audio.Play(0.25);
 		audio.pitch = 1;
+		
+		GameObject.Find("Player").transform.GetComponent(Player).score += scoreValue;
 		
 		isDead = true;
 	} 
