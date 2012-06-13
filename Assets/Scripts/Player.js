@@ -1,5 +1,8 @@
 #pragma strict
 
+// General Stuff
+var score = 0;
+
 // Movement Stuff
 var defaultSpeed = 6;
 var defaultAcceleration = 20;
