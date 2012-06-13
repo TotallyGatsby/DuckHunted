@@ -10,7 +10,7 @@ ModelImporter:
     materialName: 0
     materialSearch: 1
   animations:
-    generateAnimations: 3
+    generateAnimations: 0
     bakeSimulation: 0
     splitAnimations: 1
     animationCompression: 1
@@ -36,7 +36,7 @@ ModelImporter:
     normalSmoothAngle: 0
     splitTangentsAcrossUV: 1
     normalImportMode: 1
-    tangentImportMode: 2
+    tangentImportMode: 1
   textMetaNamesToFileIDs:
     //RootNode:
       data:
@@ -51,6 +51,3 @@ ModelImporter:
       data:
         first: 33
         second: a05a3200
-      data:
-        first: 111
-        second: 605fa900
