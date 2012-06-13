@@ -49,6 +49,25 @@ function Update ()
 {
 	Screen.lockCursor = true; // Captures the mouse cursor
 	
+	/* DEBUG Stuff */
+	
+	// Set sensitivity ingame (place holder till we get a proper options menu)
+	if (Input.GetKeyDown(KeyCode.N))
+	{
+		defaultSensitivity -= 1;
+		Debug.Log(defaultSensitivity);
+		mouseLookScript.sensitivityX = defaultSensitivity;
+		mouseLookScript.sensitivityY = defaultSensitivity;
+	}
+	else if (Input.GetKeyDown(KeyCode.M))
+	{
+		defaultSensitivity += 1;
+		Debug.Log(defaultSensitivity);
+		mouseLookScript.sensitivityX = defaultSensitivity;
+		mouseLookScript.sensitivityY = defaultSensitivity;
+	}
+	
+	
 	/* Movement */
 	
 	// Sprint
