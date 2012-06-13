@@ -1,0 +1,23 @@
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 9.0c [igxprd32.dll 6.14.10.5134]
+    Renderer: Intel(R) Graphics Media Accelerator 3150
+    Vendor:   Intel
+    VRAM:     64 MB (via fallback)
+    Caps:     Shader=20 DepthRT=0 NativeDepth=0 NativeShadow=0 DF16=0 DF24=0 INTZ=0 RAWZ=0 NULL=0 RESZ=0 SlowINTZ=0
+desktop: 1024x600 60Hz; virtual: 1024x600 at 0,0
+<I> Initializing (RawInput).
+<RI> Input initialized.
+Initialize engine version: 3.5.2f2
+Begin MonoManager ReloadAssembly
+Platform assembly: C:\Documents and Settings\Svampson\DuckHunted\Build\DuckHunted_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading C:\Documents and Settings\Svampson\DuckHunted\Build\DuckHunted_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: C:\Documents and Settings\Svampson\DuckHunted\Build\DuckHunted_Data\Managed\Assembly-CSharp-firstpass.dll (this message is harmless)
+Loading C:\Documents and Settings\Svampson\DuckHunted\Build\DuckHunted_Data\Managed\Assembly-CSharp-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Documents and Settings\Svampson\DuckHunted\Build\DuckHunted_Data\Managed\Assembly-UnityScript-firstpass.dll (this message is harmless)
+Loading C:\Documents and Settings\Svampson\DuckHunted\Build\DuckHunted_Data\Managed\Assembly-UnityScript-firstpass.dll into Unity Child Domain
+Platform assembly: C:\Documents and Settings\Svampson\DuckHunted\Build\DuckHunted_Data\Managed\Assembly-UnityScript.dll (this message is harmless)
+Loading C:\Documents and Settings\Svampson\DuckHunted\Build\DuckHunted_Data\Managed\Assembly-UnityScript.dll into Unity Child Domain
+- Completed reload, in  0.466 seconds
+Platform assembly: C:\Documents and Settings\Svampson\DuckHunted\Build\DuckHunted_Data\Managed\UnityScript.Lang.dll (this message is harmless)
+Platform assembly: C:\Documents and Settings\Svampson\DuckHunted\Build\DuckHunted_Data\Managed\Boo.Lang.dll (this message is harmless)
