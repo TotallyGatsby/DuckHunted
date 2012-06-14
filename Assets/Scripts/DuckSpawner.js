@@ -26,7 +26,7 @@ function Update () {
 		// Only spawn one duck until the player moves away
 		if (Vector3.Distance(pTransform.position, gameObject.transform.position) > noSpawnRadius){
 			var spawnPos:Vector3 = pTransform.position - (pTransform.forward * 10.0);
-			spawnPos.y = pTransform.y + 5;
+			spawnPos.y = pTransform.position.y + 5;
 			
 			// Pick a random duck! (Heavily weighted towards a green duck)
 			var randomRange = Random.Range(0, 100);

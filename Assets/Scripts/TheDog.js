@@ -32,6 +32,8 @@ var duckScentRadius:float = 20; // How far away the dog can sense ducks
 
 var playerScentRadius:float = 10; // How far away the dog can sense the player's exact location for a charge!
 
+var grassParticle:ParticleSystem;
+
 function Start () {
 	player = GameObject.Find("Player");
 	zigTimer = Random.Range(minZigTime, maxZigTime);
@@ -44,6 +46,18 @@ function Update () {
 	var move = behaviorState.getMove();
 	
 	Debug.DrawLine(transform.position, transform.position+move, Color.green, 1);
+	
+	if (grassParticle.isPlaying && Vector3.Magnitude(move/Time.deltaTime) < .5){
+		grassParticle.Stop();
+	} 
+	else if (!grassParticle.isPlaying && Vector3.Magnitude(move/Time.deltaTime) > .5){
+		grassParticle.Play();
+	}
+	else {
+		grassParticle.startSpeed = (speed/maxSpeed) * 10;
+	}
+
+	transform.LookAt(move, Vector3.up);
 	transform.position += move;
 }
 
