@@ -47,6 +47,7 @@
      <Compile Include="Assets\Scripts\DogBehavior.js" />
      <Compile Include="Assets\Scripts\Duck.js" />
      <Compile Include="Assets\Scripts\DuckSpawner.js" />
+     <Compile Include="Assets\Scripts\Explosion.js" />
      <Compile Include="Assets\Scripts\GUIBullet.js" />
      <Compile Include="Assets\Scripts\GUICombo.js" />
      <Compile Include="Assets\Scripts\GUIScore.js" />

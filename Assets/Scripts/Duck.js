@@ -3,6 +3,7 @@
 var health:float = 10.0;
 var speed: float = .15;
 var scoreValue = 100;
+var explodes = false; // Does it explode when killed?
 
 // Min and Max scale
 var minScale: float = 1;
@@ -52,8 +53,9 @@ var hasPlayedThud = false;
 var fallClip : AudioClip;
 var thudClip : AudioClip;
 
-// TextMesh
+// Prefabs
 var textMesh : Transform;
+var explosion : Transform;
 
 private var model : Transform;
 private var player : Transform;
@@ -99,24 +101,7 @@ function Update () {
 	
     // If dead, just lie there like a lump. A duck lump
 	if (health <= 0 && !isDead){
-		rigidbody.useGravity = true;
-		duckCount--;
-		
-		transform.localEulerAngles = Vector3(90, 0, 0);
-		audio.clip = fallClip;
-		audio.Play(0.25);
-		audio.pitch = 1;
-		
-		// Show score value		
-		var totalScoreValue : int = scoreValue + (scoreValue * (player.GetComponent(Player).combo * player.GetComponent(Player).comboFactor));
-		
-		var textScoreMesh = Instantiate(textMesh, transform.position, Camera.mainCamera.transform.rotation);
-		textScoreMesh.transform.GetComponent(TextMesh).text = totalScoreValue.ToString();
-		
-		player.GetComponent(Player).score += totalScoreValue;
-		player.GetComponent(Player).combo += 1;
-		
-		isDead = true;
+		Death();
 	} 
 	else if (stunTime > 0)
 	{
@@ -192,4 +177,43 @@ function ApplyDamage(amount: float){
 	
 	targetPos = Vector3.one;
 	health -= amount;
+}
+
+function Death() 
+{
+	rigidbody.useGravity = true;
+	duckCount--;
+	
+	transform.localEulerAngles = Vector3(90, 0, 0);
+	audio.clip = fallClip;
+	audio.Play(0.25);
+	audio.pitch = 1;
+	
+	// Show score value		
+	var totalScoreValue : int = scoreValue + (scoreValue * (player.GetComponent(Player).combo * player.GetComponent(Player).comboFactor));
+	
+	var textScoreMesh = Instantiate(textMesh, transform.position, Camera.mainCamera.transform.rotation);
+	textScoreMesh.transform.GetComponent(TextMesh).text = totalScoreValue.ToString();
+	
+	player.GetComponent(Player).score += totalScoreValue;
+	player.GetComponent(Player).combo += 1;
+	
+	if (explodes == true)
+	{
+		Debug.Log("Explosion!!");
+		Instantiate(explosion, transform.position, Quaternion.identity);
+		Destroy(gameObject);
+	}
+		
+	
+	isDead = true;
+}
+
+function OnTriggerEnter(collider : Collider)
+{
+	if (collider.transform.name == "Explosion")
+	{
+		Death();
+		Destroy(gameObject);
+	}
 }

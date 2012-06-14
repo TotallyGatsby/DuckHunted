@@ -41,8 +41,9 @@ var flashlightOn = false; // Whatever the flashlight is on or not
 
 var flashlightTransform : Transform;
 
+// DEBUG
+var explosion : Transform;
 
-//var parentTransform : Transform;
 private var mouseLookScript : MouseLook;
 private var characterMotor : CharacterMotor;
 
@@ -87,6 +88,11 @@ function Update ()
 		Debug.Log("Sensitivity: " + defaultSensitivity);
 		mouseLookScript.sensitivityX = defaultSensitivity;
 		mouseLookScript.sensitivityY = defaultSensitivity;
+	}
+	
+	if (Input.GetKeyDown(KeyCode.V))
+	{
+		Instantiate(explosion, transform.position, transform.rotation);
 	}
 	
 	if (Input.GetKeyDown(KeyCode.K))
