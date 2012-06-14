@@ -54,10 +54,14 @@ var thudClip : AudioClip;
 
 
 private var model : Transform;
+private var player : Transform;
 
 function Start () {
 	model = transform.FindChild("Model");
 	duckCount++;
+	
+	// Find player (So ducks don't have to search after "Player" so much)
+	player = GameObject.Find("Player").transform;
 	
 	// Set scale
 	var scale = Random.Range(minScale, maxScale);
@@ -101,7 +105,8 @@ function Update () {
 		audio.Play(0.25);
 		audio.pitch = 1;
 		
-		GameObject.Find("Player").transform.GetComponent(Player).score += scoreValue;
+		player.GetComponent(Player).score += scoreValue + (scoreValue * (player.GetComponent(Player).combo * player.GetComponent(Player).comboFactor));
+		player.GetComponent(Player).combo += 1;
 		
 		isDead = true;
 	} 
@@ -131,7 +136,7 @@ function Update () {
 				unitTarget *= randScale;	
 				
 				// Position the sphere over the player (since we want ducks to fly around the player)
-				unitTarget += GameObject.Find("Player").transform.position;
+				unitTarget += player.position;
 				
 				
 				// Check how high up the player is, flight target is adjusted accordingly

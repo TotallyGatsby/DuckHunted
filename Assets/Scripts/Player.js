@@ -2,6 +2,8 @@
 
 // General Stuff
 var score = 0;
+var comboTime : float = 6.0; // Time between kills before a combo ends
+var comboFactor : float = 0.25; // Score when killing duck = Score + (Combo * ComboFactor)
 
 // Movement Stuff
 var defaultSpeed = 6;
@@ -27,6 +29,11 @@ var hitParticleSystemPrefab : Transform; // Prefab for Bullet Hit Particle syste
 
 var gunTransform : Transform;
 
+// Combo system stuff
+var comboTimer : float = 0.0;
+var combo : int = 0;
+var prevCombo : int = 0; // Combo value last frame (to check if changed)
+
 public var bullets = 3;
 
 // Flashlight
@@ -51,9 +58,22 @@ function Start ()
 function Update () 
 {
 	Screen.lockCursor = true; // Captures the mouse cursor
+	comboTimer -=  1 * Time.deltaTime;
+	Debug.Log("Combo: " + combo + " Timer: " + comboTimer);
 	
+	// Set combo timer to combo time when combo increases
+	if (combo != prevCombo && combo != 0)
+	{
+		comboTimer = comboTime;
+	}
+	
+	// Setting combo to zero when timer runs out
+	if (comboTimer <= 0)
+	{
+		combo = 0;
+	}
+		
 	/* DEBUG Stuff */
-	
 	// Set sensitivity ingame (place holder till we get a proper options menu)
 	if (Input.GetKeyDown(KeyCode.N))
 	{
@@ -65,7 +85,7 @@ function Update ()
 	else if (Input.GetKeyDown(KeyCode.M))
 	{
 		defaultSensitivity += 1;
-		Debug.Log(defaultSensitivity);
+		Debug.Log("Sensitivity: " + defaultSensitivity);
 		mouseLookScript.sensitivityX = defaultSensitivity;
 		mouseLookScript.sensitivityY = defaultSensitivity;
 	}
@@ -183,5 +203,7 @@ function Update ()
 	{
 			gunTransform.FindChild("Model").animation.CrossFade("Idle", 0.5);
 	}
-
+	
+	//Set prevCombo to combo
+	prevCombo = combo;
 }

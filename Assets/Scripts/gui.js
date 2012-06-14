@@ -2,13 +2,12 @@
 
 public var playerTransform : Player;
 
-function Start () {
+function Start () 
+{
 
 }
 
 function Update () 
-{
-
-	
+{	
 
 }
