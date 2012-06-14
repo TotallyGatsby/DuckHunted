@@ -1,4 +1,5 @@
 #pragma strict
+var id : int;
 
 var health:float = 10.0;
 var speed: float = .15;
@@ -200,6 +201,7 @@ function Death()
 	
 	if (explodes == true)
 	{
+		DuckSpawner.ducks.RemoveAt(id);
 		Debug.Log("Explosion!!");
 		Instantiate(explosion, transform.position, Quaternion.identity);
 		Destroy(gameObject);
@@ -213,6 +215,7 @@ function OnTriggerEnter(collider : Collider)
 {
 	if (collider.transform.name == "Explosion")
 	{
+		DuckSpawner.ducks.RemoveAt(id);
 		Death();
 		Destroy(gameObject);
 	}

@@ -38,8 +38,9 @@ function Update () {
 				duckType = 2;
 				
 			
-			var clone:Transform = Instantiate(spawnPrefab[duckType], spawnPos, Quaternion.identity);
+			var clone:Transform = Instantiate(spawnPrefab[duckType], spawnPos, Quaternion.identity);	
 			ducks.Push(clone);
+			clone.GetComponent(Duck).id = ducks.length;
 			gameObject.transform.position = pTransform.position;
 		}
 	}

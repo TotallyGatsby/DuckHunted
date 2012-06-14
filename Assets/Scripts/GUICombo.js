@@ -13,11 +13,11 @@ function Update ()
 	{
 		guiText.text = player.combo + "x Combo!\n";
 		
-		if (player.combo <= 3)
+		if (player.combo <= 6)
 			guiText.text += "Good!";
-		else if (player.combo > 3 && player.combo <= 6)
+		else if (player.combo > 6 && player.combo <= 12)
 			guiText.text += "Nice!";
-		else if (player.combo > 6 && player.combo <= 9)
+		else if (player.combo > 12 && player.combo <= 24)
 			guiText.text += "Cool!";
 		else
 			guiText.text += "Crazy!";
@@ -26,6 +26,6 @@ function Update ()
 	}
 	else
 	{
-		transform.position.x = Mathf.Lerp(transform.position.x, 1.2, Time.deltaTime*4);
+		transform.position.x = Mathf.Lerp(transform.position.x, 1.5, Time.deltaTime*4);
 	}
 }

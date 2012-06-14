@@ -1,10 +1,9 @@
 fileFormatVersion: 2
-guid: d773cf046add73e48918884224147b89
+guid: 703f15f8f1a97344297ab132ee152180
 ModelImporter:
   fileIDToRecycleName:
-    4300000: Sphere
-    4300002: Cube
-    7400000: Default Take //// Explosion
+    4300000: Cube
+    7400000: Default Take //// Dog
   serializedVersion: 10
   materials:
     importMaterials: 1
