@@ -55,9 +55,11 @@
      <Compile Include="Assets\Scripts\Md5.js" />
      <Compile Include="Assets\Scripts\Player.js" />
      <Compile Include="Assets\Scripts\RifleAnimationEvents.js" />
+     <Compile Include="Assets\Scripts\ScoreTextMesh.js" />
      <Compile Include="Assets\Scripts\TheDog.js" />
      <Compile Include="Assets\Scripts\gui.js" />
      <None Include="Assets\iTween\ReadMe!.txt" />
+     <None Include="Assets\Shaders\TextMeshShader.shader" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">

@@ -52,6 +52,8 @@ var hasPlayedThud = false;
 var fallClip : AudioClip;
 var thudClip : AudioClip;
 
+// TextMesh
+var textMesh : Transform;
 
 private var model : Transform;
 private var player : Transform;
@@ -105,7 +107,13 @@ function Update () {
 		audio.Play(0.25);
 		audio.pitch = 1;
 		
-		player.GetComponent(Player).score += scoreValue + (scoreValue * (player.GetComponent(Player).combo * player.GetComponent(Player).comboFactor));
+		// Show score value		
+		var totalScoreValue : int = scoreValue + (scoreValue * (player.GetComponent(Player).combo * player.GetComponent(Player).comboFactor));
+		
+		var textScoreMesh = Instantiate(textMesh, transform.position, Camera.mainCamera.transform.rotation);
+		textScoreMesh.transform.GetComponent(TextMesh).text = totalScoreValue.ToString();
+		
+		player.GetComponent(Player).score += totalScoreValue;
 		player.GetComponent(Player).combo += 1;
 		
 		isDead = true;
