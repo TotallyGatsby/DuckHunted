@@ -50,7 +50,9 @@
      <Compile Include="Assets\Scripts\GUIBullet.js" />
      <Compile Include="Assets\Scripts\GUICombo.js" />
      <Compile Include="Assets\Scripts\GUIScore.js" />
+     <Compile Include="Assets\Scripts\HSController.js" />
      <Compile Include="Assets\Scripts\IntroScene.js" />
+     <Compile Include="Assets\Scripts\Md5.js" />
      <Compile Include="Assets\Scripts\Player.js" />
      <Compile Include="Assets\Scripts\RifleAnimationEvents.js" />
      <Compile Include="Assets\Scripts\TheDog.js" />

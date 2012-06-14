@@ -59,8 +59,7 @@ function Update ()
 {
 	Screen.lockCursor = true; // Captures the mouse cursor
 	comboTimer -=  1 * Time.deltaTime;
-	Debug.Log("Combo: " + combo + " Timer: " + comboTimer);
-	
+
 	// Set combo timer to combo time when combo increases
 	if (combo != prevCombo && combo != 0)
 	{
@@ -88,6 +87,15 @@ function Update ()
 		Debug.Log("Sensitivity: " + defaultSensitivity);
 		mouseLookScript.sensitivityX = defaultSensitivity;
 		mouseLookScript.sensitivityY = defaultSensitivity;
+	}
+	
+	if (Input.GetKeyDown(KeyCode.K))
+	{
+		transform.GetComponent(HSController).postScore("Name Here", score);
+	}
+	else if (Input.GetKeyDown(KeyCode.L))
+	{
+		transform.GetComponent(HSController).getScores();
 	}
 	
 	
