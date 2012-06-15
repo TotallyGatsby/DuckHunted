@@ -1,4 +1,4 @@
-private var secretKey="duckacopalyse"; // Edit this value and make sure it's the same as the one stored on the server
+private var secretKey="shhthisisasecret"; // Edit this value and make sure it's the same as the one stored on the server
 var addScoreUrl="http://games.svampson.se/duckhunted/addscore.php?"; //be sure to add a ? to your url
 var highscoreNameUrl="http://games.svampson.se/duckhunted/displayname.php";
 var highscoreScoreUrl="http://games.svampson.se/duckhunted/displayscore.php";
