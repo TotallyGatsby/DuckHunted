@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\Global.js" />
      <Compile Include="Assets\Scripts\HSController.js" />
      <Compile Include="Assets\Scripts\IntroScene.js" />
+     <Compile Include="Assets\Scripts\Leaderboards.js" />
      <Compile Include="Assets\Scripts\Md5.js" />
      <Compile Include="Assets\Scripts\Options.js" />
      <Compile Include="Assets\Scripts\Player.js" />
