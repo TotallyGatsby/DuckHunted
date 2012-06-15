@@ -128,6 +128,7 @@ function Update () {
 		else
 		{
 			transform.FindChild("Model").animation.Play("Flap"); // Flap those wings
+			transform.LookAt(targetPos);
 		}
 	}
 }
