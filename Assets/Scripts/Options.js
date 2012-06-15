@@ -1,13 +1,15 @@
 #pragma strict
 var customSkin : GUISkin;
-var sensitivitySliderValue = 10.0;
-var invertToggle = false;
-var fullscreenToggle = false;
 private var guiAlpha = 1;
 private var guiDelay = 2.0;
 
 function Start () {
+	
+}
 
+function OnEnable () 
+{
+	Global.leaderboards.gameObject.active = false;
 }
 
 function Update () {

@@ -1,7 +1,7 @@
 private var secretKey="mySecretKey"; // Edit this value and make sure it's the same as the one stored on the server
 var addScoreUrl="http://games.svampson.se/duckhunted/addscore.php?"; //be sure to add a ? to your url
-var highscoreUrl="http://games.svampson.se/duckhunted/display.php";
-var hsText : GUIText;
+var highscoreNameUrl="http://games.svampson.se/duckhunted/displayname.php";
+var highscoreScoreUrl="http://games.svampson.se/duckhunted/displayscore.php";
 
 function Start() {
     getScores();
@@ -24,13 +24,27 @@ function postScore(name, score) {
  
 // Get the scores from the MySQL DB to display in a GUIText.
 function getScores() {
-    hsText.text = "Loading Scores";
-    hs_get = WWW(highscoreUrl);
+    Global.hsScoreText = "Loading Scores";
+    hs_get = WWW(highscoreScoreUrl);
     yield hs_get;
     
     if(hs_get.error) {
         print("There was an error getting the high score: " + hs_get.error);
     } else {
-        hsText.text = hs_get.text; // this is a GUIText that will display the scores in game.
+        Global.hsScoreText = hs_get.text; // this is a GUIText that will display the scores in game.
+    }
+    
+    getNames();
+}
+
+function getNames() {
+    Global.hsNameText = "";
+    hs_get = WWW(highscoreNameUrl);
+    yield hs_get;
+    
+    if(hs_get.error) {
+        print("There was an error getting the high score: " + hs_get.error);
+    } else {
+        Global.hsNameText = hs_get.text; // this is a GUIText that will display the scores in game.
     }
 }

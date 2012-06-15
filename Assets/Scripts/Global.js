@@ -8,11 +8,18 @@ static var fullscreen = false;
 static var volume = 1.0;
 
 static var options : Transform;
+static var leaderboards : Transform;
+
+static var hsController : HSController;
+static var hsNameText : String;
+static var hsScoreText : String;
 
 private var wasLocked = false;
 
 function Start () {
 	options = transform.FindChild("Options");
+	leaderboards = transform.FindChild("Leaderboards");
+	hsController = transform.GetComponent(HSController);
 }
 
 function Update () 

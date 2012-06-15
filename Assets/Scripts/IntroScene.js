@@ -33,5 +33,5 @@ function OnGUI()
 	if (GUI.Button(Rect(Screen.width-210, Screen.height - 120, 200, 50),"Options"))
 		Global.options.gameObject.active = true;
 	if (GUI.Button(Rect(Screen.width-210, Screen.height - 60, 200, 50),"Leaderboards"))
-		Debug.Log("Clicked Leaderboards");
+		Global.leaderboards.gameObject.active = true;
 }

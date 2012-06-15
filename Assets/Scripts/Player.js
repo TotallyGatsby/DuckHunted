@@ -97,17 +97,7 @@ function Update ()
 	if (Input.GetKeyDown(KeyCode.V))
 	{
 		Instantiate(explosion, transform.position, transform.rotation);
-	}
-	
-	if (Input.GetKeyDown(KeyCode.K))
-	{
-		transform.GetComponent(HSController).postScore("Name Here", score);
-	}
-	else if (Input.GetKeyDown(KeyCode.L))
-	{
-		transform.GetComponent(HSController).getScores();
-	}
-	
+	}	
 	
 	/* Movement */
 	
