@@ -7,7 +7,7 @@ private var guiAlpha = 1;
 private var guiDelay = 2.0;
 
 function Start () {
-
+	transform.active = false;
 }
 
 function Update () {
