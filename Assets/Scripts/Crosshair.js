@@ -5,5 +5,8 @@ function Start () {
 }
 
 function Update () {
-	guiTexture.color.a = 0.5;
+	if (transform.parent.GetComponent(gui).playerTransform.gunZoom == false)
+		guiTexture.enabled = true;
+	else
+		guiTexture.enabled = false;
 }
