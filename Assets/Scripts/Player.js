@@ -187,15 +187,6 @@ function Update ()
 			mouseLookScript.sensitivityY = defaultSensitivity * Global.invertModifier;
 		}
 	}
-	
-	/* Flashlight */
-	if (Input.GetButtonDown("Flashlight"))
-		flashlightOn = !flashlightOn; // Switch flashlight on/off
-		
-	if (flashlightOn == true)
-		flashlightTransform.GetComponent(Light).light.enabled = true;
-	else if (flashlightOn == false)
-		flashlightTransform.GetComponent(Light).light.enabled = false;
 		
 	/* Animation */
 	if (!gunTransform.FindChild("Model").animation["Fire"].enabled && 
