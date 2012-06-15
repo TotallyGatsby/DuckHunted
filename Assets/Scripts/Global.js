@@ -24,6 +24,13 @@ function Start () {
 
 function Update () 
 {
+	if (options == null)
+		options = transform.FindChild("Options");
+	if (leaderboards == null)
+		leaderboards = transform.FindChild("Leaderboards");
+	if (hsController == null)
+		hsController = transform.GetComponent(HSController);
+	
 	AudioListener.volume = volume;
 	Screen.fullScreen = fullscreen;
 	

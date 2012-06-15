@@ -55,6 +55,9 @@ function Start ()
 	mouseLookScript = transform.GetComponent(MouseLook); // Get Mouse look script (For setting sensitivity when using zooming)
 	characterMotor = transform.GetComponent(CharacterMotor);
 	
+	Global.options.gameObject.active = false;
+	Global.leaderboards.gameObject.active = false;
+	
 }
 
 function Update () 
