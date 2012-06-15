@@ -59,7 +59,7 @@ function Update ()
 {
 	comboTimer -=  1 * Time.deltaTime;
 	
-	if (Global.options.gameObject.active == false && Global.leaderboards.gameObject.active == false)
+	if (Global.options.gameObject.active == false && Global.leaderboards.gameObject.active == false && Global.leaderboardsInput.gameObject.active == false)
 	{
 		Screen.lockCursor = true;
 		mouseLookScript.enabled = true;
@@ -203,7 +203,7 @@ function Update ()
 	}
 		
 	// Death
-	if (isGameOver == true && Global.leaderboards.gameObject.active == false)
+	if (isGameOver == true && Global.leaderboardsInput.gameObject.active == false)
 	{
 			iTween.CameraFadeAdd();
 		iTween.CameraFadeTo({
@@ -220,14 +220,16 @@ var isGameOver = false;
 
 function DogSmack (){
 	if ( !isGameOver){
+		Global.score = score;
 		characterMotor.enabled = false;
 		mouseLookScript.enabled = false;
 		isGameOver = true;
-		Global.leaderboards.gameObject.active = true;
+		Global.leaderboardsInput.gameObject.active = true;
 	}
 }
 
 function GoToMenu()
 {
+	Screen.lockCursor = false;
 	Application.LoadLevel("mainmenu");
 }
