@@ -59,10 +59,7 @@ function Update ()
 {
 	comboTimer -=  1 * Time.deltaTime;
 	
-	if (Input.GetKeyDown ("escape"))
-        Global.options.gameObject.active = !Global.options.gameObject.active;
-	
-	if (Global.options.gameObject.active == false)
+	if (Global.options.gameObject.active == false && Global.leaderboards.gameObject.active == false)
 	{
 		Screen.lockCursor = true;
 		mouseLookScript.enabled = true;
@@ -72,140 +69,143 @@ function Update ()
 		Screen.lockCursor = false;	
 		mouseLookScript.enabled = false;
 	}
-
-	// Set combo timer to combo time when combo increases
-	if (combo != prevCombo && combo != 0)
-	{
-		comboTimer = comboTime;
-	}
 	
-	// Setting combo to zero when timer runs out
-	if (comboTimer <= 0)
+	if (!isGameOver)
 	{
-		combo = 0;
-	}
-	
-	if (defaultSensitivity != Global.sensitivity)
-	{
-		defaultSensitivity = Global.sensitivity;
-		mouseLookScript.sensitivityX = defaultSensitivity;
-		mouseLookScript.sensitivityY = defaultSensitivity * Global.invertModifier;
-	}
-	
-	/* Movement */
-	
-	// Sprint
-	if (Input.GetButtonDown("Sprint"))
-	{
-		sprinting = true;
-		characterMotor.movement.maxForwardSpeed = sprintSpeed;
-		characterMotor.movement.maxSidewaysSpeed = defaultSpeed / 2;
-		characterMotor.movement.maxBackwardsSpeed = 0;
-		characterMotor.movement.maxGroundAcceleration = sprintAcceleration;
-		gunTransform.FindChild("Model").animation.CrossFade("Run", 0.25);
-		
-	}
-	else if (Input.GetButtonUp("Sprint"))
-	{
-		sprinting = false;
-		characterMotor.movement.maxForwardSpeed = defaultSpeed;
-		characterMotor.movement.maxSidewaysSpeed = defaultSpeed;
-		characterMotor.movement.maxBackwardsSpeed = defaultSpeed;
-		characterMotor.movement.maxGroundAcceleration = defaultAcceleration;
-	}
-
-	/* Gun Stuff */
-	
-	// Fire
-	if (!sprinting) // Can't fire or zoom while sprinting
-	{
-		if (Input.GetButtonDown("Fire1") && !gunTransform.FindChild("Model").animation["Fire"].enabled && !gunTransform.FindChild("Model").animation["Reload"].enabled)
+		// Set combo timer to combo time when combo increases
+		if (combo != prevCombo && combo != 0)
 		{
-			if (bullets > 0)
-			{
-				gunTransform.FindChild("Model").animation.Play("Fire"); // Play firing animation, which in turns activates muzzle flash and gun sound
-				
-				// Raycasting
-				var fireRay = new Ray(Camera.mainCamera.transform.position, transform.forward);
-				var fireRayHit : RaycastHit;
-				Debug.DrawRay (fireRay.origin, transform.forward, Color.blue, 1);
-				if (Physics.Raycast (fireRay, fireRayHit, 1000000))
-				{
-					Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
-					
-					Instantiate(hitParticleSystemPrefab, fireRayHit.point, Quaternion.identity);
-					
-					if (fireRayHit.collider.CompareTag("Enemy"))
-					{
-						fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
-						fireRayHit.collider.gameObject.SendMessage("ApplyDamage", gunDamage);
-					}
-				}
-				//
-				
-				bullets -= 1; // Subtract bullet
-			}
-			else // Auto Reload
-				gunTransform.FindChild("Model").animation.CrossFade("Reload", 0.25); // Plays reload animation, which in turns triggers the reload
+			comboTimer = comboTime;
 		}
 		
-		// Manual Reload
-		if (Input.GetButtonDown("Reload"))
-			gunTransform.FindChild("Model").animation.CrossFade("Reload", 0.25); // Plays reload animation, which in turns triggers the reload
-	
-	
-		// Zoom
-		if (Input.GetButtonDown("Fire2"))
-		{
-			gunZoom = true;
-		}
-	
-		else if (Input.GetButtonUp("Fire2"))
-			gunZoom = false;
+		if (Input.GetKeyDown ("escape"))
+	    Global.options.gameObject.active = !Global.options.gameObject.active;
 		
-		if (gunZoom == true)
+		// Setting combo to zero when timer runs out
+		if (comboTimer <= 0)
 		{
-			gunTransform.localPosition = Vector3.Lerp(gunTransform.localPosition, gunZoomPosition, Time.deltaTime*gunZoomSpeed);
-			gunTransform.localEulerAngles.y = Mathf.LerpAngle(gunTransform.localEulerAngles.y, gunZoomRotation.y, Time.deltaTime*gunZoomSpeed);
-			gunTransform.localEulerAngles.z = Mathf.LerpAngle(gunTransform.localEulerAngles.z, gunZoomRotation.z, Time.deltaTime*gunZoomSpeed);
-			Camera.mainCamera.fov = Mathf.Lerp(Camera.mainCamera.fov, 30, Time.deltaTime*gunZoomSpeed);
-			
-			// Adjust sensitivity when zoomed in
-			mouseLookScript.sensitivityX = defaultSensitivity/zoomSensitivitySlowFactor;
-			mouseLookScript.sensitivityY = defaultSensitivity/zoomSensitivitySlowFactor * Global.invertModifier;
-			
+			combo = 0;
 		}
-		else if (gunZoom == false)
+		
+		if (defaultSensitivity != Global.sensitivity)
 		{
-			gunTransform.localPosition = Vector3.Lerp(gunTransform.localPosition, gunDefaultPosition, Time.deltaTime*gunZoomSpeed); 
-			gunTransform.localEulerAngles.y = Mathf.LerpAngle(gunTransform.localEulerAngles.y, gunDefaultRotation.y, Time.deltaTime*gunZoomSpeed);
-			gunTransform.localEulerAngles.z = Mathf.LerpAngle(gunTransform.localEulerAngles.z, gunDefaultRotation.z, Time.deltaTime*gunZoomSpeed);
-			Camera.mainCamera.fov = Mathf.Lerp(Camera.mainCamera.fov, 60, Time.deltaTime*gunZoomSpeed);
-			
-			// Reset sensitivity when zooming out
+			defaultSensitivity = Global.sensitivity;
 			mouseLookScript.sensitivityX = defaultSensitivity;
 			mouseLookScript.sensitivityY = defaultSensitivity * Global.invertModifier;
 		}
+		
+		/* Movement */
+		
+		// Sprint
+		if (Input.GetButtonDown("Sprint"))
+		{
+			sprinting = true;
+			characterMotor.movement.maxForwardSpeed = sprintSpeed;
+			characterMotor.movement.maxSidewaysSpeed = defaultSpeed / 2;
+			characterMotor.movement.maxBackwardsSpeed = 0;
+			characterMotor.movement.maxGroundAcceleration = sprintAcceleration;
+			gunTransform.FindChild("Model").animation.CrossFade("Run", 0.25);
+			
+		}
+		else if (Input.GetButtonUp("Sprint"))
+		{
+			sprinting = false;
+			characterMotor.movement.maxForwardSpeed = defaultSpeed;
+			characterMotor.movement.maxSidewaysSpeed = defaultSpeed;
+			characterMotor.movement.maxBackwardsSpeed = defaultSpeed;
+			characterMotor.movement.maxGroundAcceleration = defaultAcceleration;
+		}
+	
+		/* Gun Stuff */
+		
+		// Fire
+		if (!sprinting) // Can't fire or zoom while sprinting
+		{
+			if (Input.GetButtonDown("Fire1") && !gunTransform.FindChild("Model").animation["Fire"].enabled && !gunTransform.FindChild("Model").animation["Reload"].enabled)
+			{
+				if (bullets > 0)
+				{
+					gunTransform.FindChild("Model").animation.Play("Fire"); // Play firing animation, which in turns activates muzzle flash and gun sound
+					
+					// Raycasting
+					var fireRay = new Ray(Camera.mainCamera.transform.position, transform.forward);
+					var fireRayHit : RaycastHit;
+					Debug.DrawRay (fireRay.origin, transform.forward, Color.blue, 1);
+					if (Physics.Raycast (fireRay, fireRayHit, 1000000))
+					{
+						Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
+						
+						Instantiate(hitParticleSystemPrefab, fireRayHit.point, Quaternion.identity);
+						
+						if (fireRayHit.collider.CompareTag("Enemy"))
+						{
+							fireRayHit.collider.gameObject.GetComponent(Rigidbody).AddForce(transform.forward*1000);
+							fireRayHit.collider.gameObject.SendMessage("ApplyDamage", gunDamage);
+						}
+					}
+					//
+					
+					bullets -= 1; // Subtract bullet
+				}
+				else // Auto Reload
+					gunTransform.FindChild("Model").animation.CrossFade("Reload", 0.25); // Plays reload animation, which in turns triggers the reload
+			}
+			
+			// Manual Reload
+			if (Input.GetButtonDown("Reload"))
+				gunTransform.FindChild("Model").animation.CrossFade("Reload", 0.25); // Plays reload animation, which in turns triggers the reload
+		
+		
+			// Zoom
+			if (Input.GetButtonDown("Fire2"))
+			{
+				gunZoom = true;
+			}
+		
+			else if (Input.GetButtonUp("Fire2"))
+				gunZoom = false;
+			
+			if (gunZoom == true)
+			{
+				gunTransform.localPosition = Vector3.Lerp(gunTransform.localPosition, gunZoomPosition, Time.deltaTime*gunZoomSpeed);
+				gunTransform.localEulerAngles.y = Mathf.LerpAngle(gunTransform.localEulerAngles.y, gunZoomRotation.y, Time.deltaTime*gunZoomSpeed);
+				gunTransform.localEulerAngles.z = Mathf.LerpAngle(gunTransform.localEulerAngles.z, gunZoomRotation.z, Time.deltaTime*gunZoomSpeed);
+				Camera.mainCamera.fov = Mathf.Lerp(Camera.mainCamera.fov, 30, Time.deltaTime*gunZoomSpeed);
+				
+				// Adjust sensitivity when zoomed in
+				mouseLookScript.sensitivityX = defaultSensitivity/zoomSensitivitySlowFactor;
+				mouseLookScript.sensitivityY = defaultSensitivity/zoomSensitivitySlowFactor * Global.invertModifier;
+				
+			}
+			else if (gunZoom == false)
+			{
+				gunTransform.localPosition = Vector3.Lerp(gunTransform.localPosition, gunDefaultPosition, Time.deltaTime*gunZoomSpeed); 
+				gunTransform.localEulerAngles.y = Mathf.LerpAngle(gunTransform.localEulerAngles.y, gunDefaultRotation.y, Time.deltaTime*gunZoomSpeed);
+				gunTransform.localEulerAngles.z = Mathf.LerpAngle(gunTransform.localEulerAngles.z, gunDefaultRotation.z, Time.deltaTime*gunZoomSpeed);
+				Camera.mainCamera.fov = Mathf.Lerp(Camera.mainCamera.fov, 60, Time.deltaTime*gunZoomSpeed);
+				
+				// Reset sensitivity when zooming out
+				mouseLookScript.sensitivityX = defaultSensitivity;
+				mouseLookScript.sensitivityY = defaultSensitivity * Global.invertModifier;
+			}
+		}
+			
+		/* Animation */
+		if (!gunTransform.FindChild("Model").animation["Fire"].enabled && 
+			!gunTransform.FindChild("Model").animation["Reload"].enabled && 
+			!sprinting) // If no animation is playing, play Idle
+		{
+				gunTransform.FindChild("Model").animation.CrossFade("Idle", 0.5);
+		}
+		
+		//Set prevCombo to combo
+		prevCombo = combo;
 	}
 		
-	/* Animation */
-	if (!gunTransform.FindChild("Model").animation["Fire"].enabled && 
-		!gunTransform.FindChild("Model").animation["Reload"].enabled && 
-		!sprinting) // If no animation is playing, play Idle
+	// Death
+	if (isGameOver == true && Global.leaderboards.gameObject.active == false)
 	{
-			gunTransform.FindChild("Model").animation.CrossFade("Idle", 0.5);
-	}
-	
-	//Set prevCombo to combo
-	prevCombo = combo;
-}
-
-var isGameOver = false;
-
-function DogSmack (){
-	if ( !isGameOver){
-		isGameOver = true;
-		iTween.CameraFadeAdd();
+			iTween.CameraFadeAdd();
 		iTween.CameraFadeTo({
 			"amount":1,
 			"time": 2,
@@ -216,6 +216,18 @@ function DogSmack (){
 	}
 }
 
-function GoToMenu(){
+var isGameOver = false;
+
+function DogSmack (){
+	if ( !isGameOver){
+		characterMotor.enabled = false;
+		mouseLookScript.enabled = false;
+		isGameOver = true;
+		Global.leaderboards.gameObject.active = true;
+	}
+}
+
+function GoToMenu()
+{
 	Application.LoadLevel("mainmenu");
 }
