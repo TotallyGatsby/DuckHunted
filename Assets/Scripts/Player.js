@@ -54,6 +54,7 @@ function Start ()
 	gunDefaultRotation = gunTransform.localEulerAngles; // Set Default rotation
 	mouseLookScript = transform.GetComponent(MouseLook); // Get Mouse look script (For setting sensitivity when using zooming)
 	characterMotor = transform.GetComponent(CharacterMotor);
+	
 }
 
 function Update () 
@@ -220,4 +221,11 @@ function Update ()
 	
 	//Set prevCombo to combo
 	prevCombo = combo;
+}
+
+function OnControllerColliderHit (info: ControllerColliderHit){
+	Debug.Log("test");
+	if (info.collider.tag == "Dog"){
+		Debug.Log("Gotcha!");
+	}
 }
