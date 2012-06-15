@@ -20,6 +20,8 @@ function Start () {
 	options = transform.FindChild("Options");
 	leaderboards = transform.FindChild("Leaderboards");
 	hsController = transform.GetComponent(HSController);
+	leaderboards.gameObject.active = false;
+	options.gameObject.active = false;
 }
 
 function Update () 

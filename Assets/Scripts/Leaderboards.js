@@ -1,6 +1,5 @@
 #pragma strict
 var customSkin : GUISkin;
-var sensitivitySliderValue = 10.0;
 
 private var guiAlpha = 1;
 private var guiDelay = 2.0;
