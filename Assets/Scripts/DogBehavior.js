@@ -59,30 +59,21 @@ class DogHuntPlayer extends DogBehavior{
 	function checkState(){
 		// Look for the player
 		if (Vector3.Distance(owner.transform.position, owner.player.transform.position) < owner.playerScentRadius){
-			// Only pounce if we're behind the player
-			var diff = owner.transform.position - owner.player.transform.position;
-			
-			// Dot product of the heading of the player and the player->dog vector
-			// will be negative if the dog is behind the player
-			var dot:float = Vector3.Dot(diff, owner.player.transform.forward);
-			
-			if (dot < 0){
-				owner.setBehavior(new DogPrepareToAttack());
-				return;
-			}
+			owner.setBehavior(new DogPrepareToAttack());
 		}
-		
-		// Look for some dead ducks (Shhh... they're just sleeping!)
-		for (var i = 0; i < DuckSpawner.ducks.length; i++){
-			var duck = (DuckSpawner.ducks[i] as Transform).gameObject;
-			var script = duck.GetComponent(Duck);
-			if (script.isDead 			&& 
-					!script.isClaimed 	&& 
-					Vector3.Distance(owner.transform.position, duck.transform.position) < owner.duckScentRadius){
-					
-				script.isClaimed = true;
-				owner.setBehavior(new DogGetDuck(i));
-				break;
+		else {
+			// Look for some dead ducks (Shhh... they're just sleeping!)
+			for (var i = 0; i < DuckSpawner.ducks.length; i++){
+				var duck = (DuckSpawner.ducks[i] as Transform).gameObject;
+				var script = duck.GetComponent(Duck);
+				if (script.isDead 			&& 
+						!script.isClaimed 	&& 
+						Vector3.Distance(owner.transform.position, duck.transform.position) < owner.duckScentRadius){
+						
+					script.isClaimed = true;
+					owner.setBehavior(new DogGetDuck(i));
+					break;
+				}
 			}
 		}
 	}
