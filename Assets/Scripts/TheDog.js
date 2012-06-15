@@ -38,6 +38,7 @@ function Start () {
 	player = GameObject.Find("Player");
 	zigTimer = Random.Range(minZigTime, maxZigTime);
 	setBehavior(new DogHuntPlayer());
+	gameObject.audio.Play(0);
 }
 
 function Update () {

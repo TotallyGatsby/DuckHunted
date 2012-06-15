@@ -42,6 +42,8 @@ var explosion : Transform;
 private var mouseLookScript : MouseLook;
 private var characterMotor : CharacterMotor;
 
+var levelStartSound: AudioClip;
+var gameOverSound: AudioClip;
 
 function Start () 
 {
@@ -53,6 +55,7 @@ function Start ()
 	Global.options.gameObject.active = false;
 	Global.leaderboards.gameObject.active = false;
 	
+	iTween.Stab(gameObject, {"audioclip":levelStartSound});
 }
 
 function Update () 
@@ -225,6 +228,7 @@ function DogSmack (){
 		mouseLookScript.enabled = false;
 		isGameOver = true;
 		Global.leaderboardsInput.gameObject.active = true;
+		iTween.Stab(gameObject, {"audioclip":gameOverSound});
 	}
 }
 
