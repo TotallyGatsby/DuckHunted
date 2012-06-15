@@ -64,6 +64,10 @@ function Update () {
 	}
 }
 
+function Launch(){
+	rigidbody.AddForce(gameObject.transform.forward * 2500);
+}
+
 function setBehavior(behavior:DogBehavior){
 	behaviorState = behavior;
 	behavior.owner = this;

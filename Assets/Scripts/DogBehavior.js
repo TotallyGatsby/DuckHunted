@@ -185,18 +185,22 @@ class DogPrepareToAttack extends DogBehavior{
 
 class DogLaunch extends DogBehavior{
 	var hasLaunched = false;
-	var timeLeft = 1.0;
+	var timeLeft = 4.0;
 	
 	function getMove(){
 		if (!hasLaunched){
-			hasLaunched = true;
-			owner.rigidbody.useGravity = true;
-			var diff = owner.player.transform.position - owner.transform.position;
+			var diff = owner.player.transform.position;
 			diff.y = owner.player.transform.position.y + .5;
+				iTween.MoveTo(owner.gameObject, {
+				"position": diff,
+				"easetype": "easeinback",
+				"looktarget": diff,
+				"speed": 7,
+				"oncomplete": "Launch",
+				"oncompletetarget":owner.gameObject
+			});
 			
-			diff = Vector3.Normalize(diff);
-			
-			owner.rigidbody.AddForce(diff*2000);
+			hasLaunched = true;
 		}
 		else {
 			timeLeft -= Time.deltaTime;
@@ -209,7 +213,7 @@ class DogLaunch extends DogBehavior{
 			var groundRay = new Ray(owner.transform.position, Vector3.down);
 			var groundRayHit: RaycastHit;
 			Physics.Raycast(groundRay, groundRayHit, 100);
-			if (groundRayHit.distance < .75){
+			if (groundRayHit.distance < .25){
 				owner.setBehavior(new DogHuntPlayer());
 				owner.rigidbody.velocity = Vector3.zero;
 			}
