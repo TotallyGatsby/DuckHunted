@@ -30,4 +30,4 @@ Build/*
 *.userprefs
 
 # Project ignores, like our High Score super secret password mechanism!
-#*HSController*
+*HSController*
