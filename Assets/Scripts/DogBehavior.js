@@ -76,7 +76,11 @@ class DogHuntPlayer extends DogBehavior{
 		for (var i = 0; i < DuckSpawner.ducks.length; i++){
 			var duck = (DuckSpawner.ducks[i] as Transform).gameObject;
 			var script = duck.GetComponent(Duck);
-			if (script.isDead && Vector3.Distance(owner.transform.position, duck.transform.position) < owner.duckScentRadius){
+			if (script.isDead 			&& 
+					!script.isClaimed 	&& 
+					Vector3.Distance(owner.transform.position, duck.transform.position) < owner.duckScentRadius){
+					
+				script.isClaimed = true;
 				owner.setBehavior(new DogGetDuck(i));
 				break;
 			}

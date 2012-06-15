@@ -2,7 +2,7 @@
 var id : int;
 
 var health:float = 10.0;
-var speed: float = .15;
+var speed: float = 3;
 var scoreValue = 100;
 var explodes = false; // Does it explode when killed?
 
@@ -39,10 +39,6 @@ var startPos:Vector3;
 @System.NonSerialized
 static var duckCount:int = 0;
 
-// How far along our lerp path we are
-@System.NonSerialized
-var lerpAmount:float;
-
 // Ducks are briefly stunned after being shot, and become physics things
 @System.NonSerialized
 var stunTime:float;
@@ -50,6 +46,11 @@ var stunTime:float;
 // Is dis duckie dead?
 @System.NonSerialized
 var isDead = false;
+
+// Has this duck been claimed by a dog
+@System.NonSerialized
+var isClaimed = false;
+
 var hasPlayedThud = false;
 var fallClip : AudioClip;
 var thudClip : AudioClip;
@@ -104,52 +105,19 @@ function Update () {
 	if (health <= 0 && !isDead){
 		Death();
 	} 
-	else if (stunTime > 0)
-	{
+	else if (stunTime > 0){
 		rigidbody.useGravity = true;
 		stunTime -= Time.deltaTime;
 	}
 	else {
 	// Be a duck and fly around
+		if (iTween.Count(gameObject) == 0){
+			GetTargetPosition();
+		}
 		// Assign a new target pos if we have hit ours already
 		if (targetPos == null || targetPos == Vector3.one || Vector3.Distance(transform.position, targetPos) < 3.0){			
-			// Set our initial state
-			startPos = transform.position;
-		    lerpAmount = 0;
-		    
-		    var isValid = false;
-		    
-		    var attempts = 0;
-		    while (!isValid && attempts < 20){
-		    	attempts++;	
-				// Pick a random point around the player by picking a random point on a unit sphere
-				var unitTarget:Vector3 = Random.onUnitSphere;
-				
-				// Scale by some random distance from the player
-				var randScale = Random.Range(minDistance, maxDistance);
-				unitTarget *= randScale;	
-				
-				// Position the sphere over the player (since we want ducks to fly around the player)
-				unitTarget += player.position;
-				
-				
-				// Check how high up the player is, flight target is adjusted accordingly
-				var minFlightRelative : Number = minFlight + unitTarget.y;
-				var maxFlightRelative : Number = maxFlight + unitTarget.y;
-														
-				// Ensure we always have a positive y value and it never gets too high or low
-				unitTarget.y = Mathf.Clamp(Mathf.Abs(unitTarget.y), minFlightRelative, maxFlightRelative);
-				
-				targetPos = unitTarget;
-				
-				// Raycasting
-				var fireRay = new Ray(transform.position, targetPos-transform.position);
-				var fireRayHit : RaycastHit;
-				isValid = !Physics.Raycast (fireRay, fireRayHit, 1000000);
-				if (!isValid){
-					Debug.DrawLine(transform.position, targetPos, Color.red, 0.1);
-				}
-			}
+			
+			GetTargetPosition();
 		}
 		quackTime -= Time.deltaTime;
 		
@@ -159,13 +127,66 @@ function Update () {
 			quackTime += Random.Range(minQuack, maxQuack);
 		}
 		else
+		{
 			transform.FindChild("Model").animation.Play("Flap"); // Flap those wings
-		
-		transform.LookAt(targetPos);
-		lerpAmount += Time.deltaTime * speed;
-		// Move along our path
-		transform.position = Vector3.Lerp(startPos, targetPos, lerpAmount);
+		}
 	}
+}
+
+function GetTargetPosition(){
+	// Set our initial state
+	startPos = transform.position;
+	
+	// New plan!
+	// Pick a random point around the player by picking a random point on a unit sphere
+	var unitTarget:Vector3 = Random.onUnitSphere;
+	
+	// Remove the y component altogether
+	unitTarget.y = 0;
+	unitTarget = Vector3.Normalize(unitTarget);
+	
+	// Scale by some random distance from the player
+	var randScale = Random.Range(minDistance, maxDistance);
+	unitTarget *= randScale;	
+	
+	// Position the circle over the player (since we want ducks to fly around the player)
+	unitTarget += player.position;
+	
+	// Temporarily move our position up
+	unitTarget.y = 100;
+	// This has effectively given us a point on a ring around the player, but we need a y value
+	// Figure out the height of the floor
+	var floorRay = new Ray(unitTarget, Vector3.down);
+	var floorRayHit: RaycastHit;
+	
+	Physics.Raycast(floorRay, floorRayHit, 200);
+	
+	// Now, we don't want to go through the floor
+	var minFlightRelative:float = minFlight + floorRayHit.point.y;
+	
+	// And we don't want ducks going too high either
+	var maxFlightRelative : float = maxFlight + floorRayHit.point.y;
+											
+	// Ensure we always have a positive y value and it never gets too high or low
+	unitTarget.y = Random.Range(minFlightRelative, maxFlightRelative);
+	
+	targetPos = unitTarget;
+	
+	// Raycasting
+	var fireRay = new Ray(transform.position, targetPos-transform.position);
+	var fireRayHit : RaycastHit;
+	if (Physics.Raycast (fireRay, fireRayHit, 1000000)){
+		// The duck is trying to fly through something, call it back 3 units
+		targetPos = fireRayHit.point - (Vector3.Normalize(fireRayHit.point-targetPos) * 5);
+		Debug.DrawLine(transform.position, targetPos, Color.red, 1, false);	
+	}
+	
+	iTween.MoveTo(gameObject, {"position":targetPos, 
+								"orienttopath":true, 
+								"speed":speed, 
+								"easetype":"linear",
+								"oncomplete":"GetTargetPosition", 
+								"oncompletetarget":gameObject});
 }
 
 
@@ -182,6 +203,7 @@ function ApplyDamage(amount: float){
 
 function Death() 
 {
+	iTween.Stop(gameObject);
 	rigidbody.useGravity = true;
 	duckCount--;
 	
