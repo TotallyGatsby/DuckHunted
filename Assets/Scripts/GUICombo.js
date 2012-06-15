@@ -1,5 +1,7 @@
 #pragma strict
 
+// testing
+
 private var player : Player;
 
 function Start () 
