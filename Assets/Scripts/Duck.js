@@ -190,6 +190,7 @@ function GetTargetPosition(){
 
 
 function ApplyDamage(amount: float){
+	iTween.Stop(gameObject);
 	stunTime = stunLength;
 	
 	transform.FindChild("Model").animation.Play("Quack");
