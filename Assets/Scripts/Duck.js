@@ -225,7 +225,7 @@ function Death()
 	if (explodes == true)
 	{
 		DuckSpawner.RemoveDuck(gameObject);
-		Debug.Log("Explosion!!");
+
 		Instantiate(explosion, transform.position, Quaternion.identity);
 		Destroy(gameObject);
 	}

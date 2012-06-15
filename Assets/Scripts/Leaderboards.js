@@ -11,8 +11,9 @@ function Start ()
 
 function OnEnable () 
 {
-	//Global.hsController.getScores();
+	
 	if (Global.options){
+		Global.hsController.getScores();
 		Global.options.gameObject.active = false;
 	}
 	
