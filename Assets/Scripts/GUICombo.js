@@ -21,6 +21,8 @@ function Update ()
 			guiText.text += "Cool!";
 		else
 			guiText.text += "Crazy!";
+			
+		guiText.text += "\n" + player.comboTimer.ToString("0.00");
 		
 		transform.position.x = Mathf.Lerp(transform.position.x, 1, Time.deltaTime*4);
 	}
