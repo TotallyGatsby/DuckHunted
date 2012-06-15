@@ -223,9 +223,22 @@ function Update ()
 	prevCombo = combo;
 }
 
-function OnControllerColliderHit (info: ControllerColliderHit){
-	Debug.Log("test");
-	if (info.collider.tag == "Dog"){
-		Debug.Log("Gotcha!");
+var isGameOver = false;
+
+function DogSmack (){
+	if ( !isGameOver){
+		isGameOver = true;
+		iTween.CameraFadeAdd();
+		iTween.CameraFadeTo({
+			"amount":1,
+			"time": 2,
+			"name": "gaveoverfade",
+			"oncomplete":"GoToMenu",
+			"oncompletetarget":gameObject
+		});
 	}
+}
+
+function GoToMenu(){
+	Application.LoadLevel("mainmenu");
 }

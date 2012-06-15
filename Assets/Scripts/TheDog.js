@@ -73,3 +73,9 @@ function OnDrawGizmos(){
 		behaviorState.drawGizmos();
 	}
 }
+
+function OnCollisionEnter(info:Collision){
+	if (info.collider.tag == "Player"){
+		info.collider.SendMessage("DogSmack");
+	}
+}
