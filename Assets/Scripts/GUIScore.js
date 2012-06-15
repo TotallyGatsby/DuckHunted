@@ -2,6 +2,8 @@
 
 private var player : Player;
 private var score = -1;
+private var restScore = 0;
+private var rollOver : int = 0;
 private var scoreValueComponent : GUIText;
 
 function Start () 
