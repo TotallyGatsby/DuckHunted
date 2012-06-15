@@ -61,8 +61,6 @@ function Update () {
 	if (move != Vector3.zero){
 		transform.LookAt(transform.position+move, Vector3.up);
 		transform.position += move;
-		
-		
 	}
 }
 

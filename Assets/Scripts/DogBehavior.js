@@ -149,6 +149,10 @@ class DogPresentDuck extends DogBehavior{
 	
 	function checkState(){
 		if (timeLeft < 0){
+			owner.duckScentRadius -= .1;
+			if (owner.duckScentRadius < owner.playerScentRadius + .5){
+				owner.duckScentRadius = owner.playerScentRadius + .5;
+			}
 			owner.setBehavior(new DogHuntPlayer());
 			DuckSpawner.RemoveDuck(target);
 			UnityEngine.Object.Destroy(target); // This took a while to find :(

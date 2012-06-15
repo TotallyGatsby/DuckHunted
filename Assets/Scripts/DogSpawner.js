@@ -3,7 +3,7 @@
 var spawnPrefab:Transform;
 
 var dogTimer:float = 0;
-var spawnTimerMax:float = 60;
+var spawnTimerMax:float = 15;
 var spawnDistance:float = 30;
 
 function Update () {

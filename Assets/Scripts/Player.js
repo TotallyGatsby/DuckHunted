@@ -131,9 +131,16 @@ function Update ()
 					gunTransform.FindChild("Model").animation.Play("Fire"); // Play firing animation, which in turns activates muzzle flash and gun sound
 					
 					// Raycasting
-					var fireRay = new Ray(Camera.mainCamera.transform.position, transform.forward);
+					var fireRayDir : Vector3;
+					if (gunZoom == false)
+						fireRayDir = transform.forward+Vector3(Random.Range(-0.05, 0.05), Random.Range(-0.05, 0.05), Random.Range(-0.05, 0.05));
+					else
+						fireRayDir = transform.forward;
+
+					var fireRay = new Ray(Camera.mainCamera.transform.position, fireRayDir);
+					Debug.Log(transform.forward);
 					var fireRayHit : RaycastHit;
-					Debug.DrawRay (fireRay.origin, transform.forward, Color.blue, 1);
+					Debug.DrawRay (fireRay.origin, fireRayDir, Color.blue, 1);
 					if (Physics.Raycast (fireRay, fireRayHit, 1000000))
 					{
 						Debug.DrawLine (fireRay.origin, fireRayHit.point, Color.red, 1);
@@ -209,13 +216,13 @@ function Update ()
 	if (isGameOver == true && Global.leaderboardsInput.gameObject.active == false)
 	{
 			iTween.CameraFadeAdd();
-		iTween.CameraFadeTo({
-			"amount":1,
-			"time": 2,
-			"name": "gaveoverfade",
-			"oncomplete":"GoToMenu",
-			"oncompletetarget":gameObject
-		});
+			iTween.CameraFadeTo({
+				"amount":1,
+				"time": 2,
+				"name": "gaveoverfade",
+				"oncomplete":"GoToMenu",
+				"oncompletetarget":gameObject
+			});
 	}
 }
 

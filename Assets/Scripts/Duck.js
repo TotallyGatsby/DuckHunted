@@ -77,6 +77,8 @@ function Start () {
 	model.animation.Stop();
 }
 
+var checkForPlayer:int = 10;
+
 function Update () {
 	
 	if (isDead){
@@ -111,11 +113,6 @@ function Update () {
 	else {
 	// Be a duck and fly around
 		if (iTween.Count(gameObject) == 0){
-			GetTargetPosition();
-		}
-		// Assign a new target pos if we have hit ours already
-		if (targetPos == null || targetPos == Vector3.one || Vector3.Distance(transform.position, targetPos) < 3.0){			
-			
 			GetTargetPosition();
 		}
 		quackTime -= Time.deltaTime;
@@ -177,7 +174,7 @@ function GetTargetPosition(){
 	var fireRayHit : RaycastHit;
 	if (Physics.Raycast (fireRay, fireRayHit, 1000000)){
 		// The duck is trying to fly through something, call it back 3 units
-		targetPos = fireRayHit.point - (Vector3.Normalize(fireRayHit.point-targetPos) * 5);
+		targetPos = fireRayHit.point - (fireRay.direction*3);
 		Debug.DrawLine(transform.position, targetPos, Color.red, 1, false);	
 	}
 	
