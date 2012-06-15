@@ -3,17 +3,17 @@
 class DogBehavior{
 	var owner:TheDog;
 	
-	virtual function getMove()
+	function getMove()
 	{
 		return Vector3.zero;
 	}
 	
 	// Check to see if we need to change states. Called prior to getMove
-	virtual function checkState(){
+	function checkState(){
 	
 	}
 	
-	virtual function drawGizmos(){
+	function drawGizmos(){
 	
 	}
 }
@@ -25,7 +25,11 @@ class DogBehavior{
 class DogHuntPlayer extends DogBehavior{
 	function getMove(){
 		var diff = owner.player.transform.position - owner.transform.position;
-	
+		owner.huntStrength += 1 * Time.deltaTime;
+		
+		if (owner.huntStrength > 90){
+			owner.huntStrength = 80;
+		}
 		// This should give us a vector that is tangential to the player
 		var move = Vector3.Normalize(Vector3.Cross(diff, Vector3.up));
 		
@@ -145,6 +149,10 @@ class DogPresentDuck extends DogBehavior{
 	
 	function checkState(){
 		if (timeLeft < 0){
+			owner.duckScentRadius -= .1;
+			if (owner.duckScentRadius < owner.playerScentRadius + .5){
+				owner.duckScentRadius = owner.playerScentRadius + .5;
+			}
 			owner.setBehavior(new DogHuntPlayer());
 			DuckSpawner.RemoveDuck(target);
 			UnityEngine.Object.Destroy(target); // This took a while to find :(
@@ -164,6 +172,8 @@ class DogPrepareToAttack extends DogBehavior{
 		}
 		owner.transform.LookAt(owner.player.transform.position);
 		timeLeft -= Time.deltaTime;
+		
+		return Vector3.zero;
 	}
 	
 	function checkState(){
@@ -191,6 +201,7 @@ class DogLaunch extends DogBehavior{
 		else {
 			timeLeft -= Time.deltaTime;
 		}
+		return Vector3.zero;
 	}
 	
 	function checkState(){
