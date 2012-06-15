@@ -71,7 +71,8 @@ class DogHuntPlayer extends DogBehavior{
 						Vector3.Distance(owner.transform.position, duck.transform.position) < owner.duckScentRadius){
 						
 					script.isClaimed = true;
-					owner.setBehavior(new DogGetDuck(i));
+					var target = (DuckSpawner.ducks[i] as Transform).gameObject;
+					owner.setBehavior(new DogGetDuck(target));
 					break;
 				}
 			}
@@ -93,10 +94,8 @@ class DogHuntPlayer extends DogBehavior{
 //    TODO: Time out or change targets if the duck is unreachable?
 class DogGetDuck extends DogBehavior{
 	var target:GameObject;
-	var targetIndex: int; // Unity Arrays don't have a 'remove' function, only removeAt
-	function DogGetDuck(targetIndex:int){
-		this.targetIndex = targetIndex;
-		this.target = (DuckSpawner.ducks[targetIndex] as Transform).gameObject;
+	function DogGetDuck(target:GameObject){
+		this.target = target;
 	}
 	
 	function getMove(){
@@ -109,7 +108,7 @@ class DogGetDuck extends DogBehavior{
 	
 	function checkState(){
 		if (Vector3.Distance(owner.transform.position, target.transform.position) < 1.8){
-			owner.setBehavior(new DogPresentDuck(targetIndex));
+			owner.setBehavior(new DogPresentDuck(target));
 		}
 	}
 	
@@ -124,14 +123,12 @@ class DogGetDuck extends DogBehavior{
 //    DogHuntPlayer -- Once it's done eating, time to get back to the hunt
 class DogPresentDuck extends DogBehavior{
 	var target:GameObject;
-	var targetIndex:int;
 	
 	var timeLeft = 2.0;
 	
 	var soundPlayed = false;
-	function DogPresentDuck(targetIndex:int){
-		this.targetIndex = targetIndex;
-		this.target = (DuckSpawner.ducks[targetIndex] as Transform).gameObject;
+	function DogPresentDuck(target:GameObject){		
+		this.target = target;
 	}
 	
 	function getMove(){
@@ -149,7 +146,7 @@ class DogPresentDuck extends DogBehavior{
 	function checkState(){
 		if (timeLeft < 0){
 			owner.setBehavior(new DogHuntPlayer());
-			DuckSpawner.ducks.RemoveAt(targetIndex);
+			DuckSpawner.RemoveDuck(target);
 			UnityEngine.Object.Destroy(target); // This took a while to find :(
 		}
 	}

@@ -40,8 +40,16 @@ function Update () {
 			
 			var clone:Transform = Instantiate(spawnPrefab[duckType], spawnPos, Quaternion.identity);	
 			ducks.Push(clone);
-			clone.GetComponent(Duck).id = ducks.length;
 			gameObject.transform.position = pTransform.position;
+		}
+	}
+}
+
+static function RemoveDuck(duck:GameObject){
+	for (var i = 0; i < ducks.length; i++){
+		if (ducks[i] == duck.transform){
+			ducks.RemoveAt(i);
+			i--;
 		}
 	}
 }

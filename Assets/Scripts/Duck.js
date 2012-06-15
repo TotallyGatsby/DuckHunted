@@ -1,5 +1,4 @@
 #pragma strict
-var id : int;
 
 var health:float = 10.0;
 var speed: float = 3;
@@ -223,7 +222,7 @@ function Death()
 	
 	if (explodes == true)
 	{
-		DuckSpawner.ducks.RemoveAt(id);
+		DuckSpawner.RemoveDuck(gameObject);
 		Debug.Log("Explosion!!");
 		Instantiate(explosion, transform.position, Quaternion.identity);
 		Destroy(gameObject);
@@ -237,8 +236,8 @@ function OnTriggerEnter(collider : Collider)
 {
 	if (collider.transform.name == "Explosion")
 	{
-		DuckSpawner.ducks.RemoveAt(id);
-		Death();
-		Destroy(gameObject);
+		// Better to use the damage method
+		ApplyDamage(500);
+		// Ensures we always kill ducks the same way
 	}
 }
