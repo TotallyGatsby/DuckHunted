@@ -4,16 +4,15 @@ private var guiAlpha = 1;
 private var guiDelay = 2.0;
 
 function Start () {
-<<<<<<< HEAD
-	
+	transform.active = false;
 }
 
 function OnEnable () 
 {
 	Global.leaderboards.gameObject.active = false;
-=======
-	transform.active = false;
->>>>>>> 966abb16bb38f6e5982428b36b4232bb68681726
+
+	
+
 }
 
 function Update () {
