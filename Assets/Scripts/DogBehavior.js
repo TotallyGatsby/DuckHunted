@@ -162,7 +162,7 @@ class DogPrepareToAttack extends DogBehavior{
 			soundPlayed = true;
 			owner.audio.PlayOneShot(owner.announceSound);
 		}
-		
+		owner.transform.LookAt(owner.player.transform.position);
 		timeLeft -= Time.deltaTime;
 	}
 	
@@ -197,8 +197,8 @@ class DogLaunch extends DogBehavior{
 		if (timeLeft < 0){
 			var groundRay = new Ray(owner.transform.position, Vector3.down);
 			var groundRayHit: RaycastHit;
-			
-			if (Physics.Raycast(groundRay, groundRayHit, .5)){
+			Physics.Raycast(groundRay, groundRayHit, 100);
+			if (groundRayHit.distance < .75){
 				owner.setBehavior(new DogHuntPlayer());
 				owner.rigidbody.velocity = Vector3.zero;
 			}

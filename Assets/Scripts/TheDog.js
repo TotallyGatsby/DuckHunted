@@ -56,9 +56,11 @@ function Update () {
 	else {
 		grassParticle.startSpeed = (speed/maxSpeed) * 10;
 	}
-
-	transform.LookAt(move, Vector3.up);
-	transform.position += move;
+	
+	if (move != Vector3.zero){
+		transform.LookAt(transform.position+move, Vector3.up);
+		transform.position += move;
+	}
 }
 
 function setBehavior(behavior:DogBehavior){
