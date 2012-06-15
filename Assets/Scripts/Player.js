@@ -36,11 +36,6 @@ var prevCombo : int = 0; // Combo value last frame (to check if changed)
 
 public var bullets = 3;
 
-// Flashlight
-var flashlightOn = false; // Whatever the flashlight is on or not
-
-var flashlightTransform : Transform;
-
 // DEBUG
 var explosion : Transform;
 
@@ -96,11 +91,6 @@ function Update ()
 		mouseLookScript.sensitivityX = defaultSensitivity;
 		mouseLookScript.sensitivityY = defaultSensitivity * Global.invertModifier;
 	}
-		
-	if (Input.GetKeyDown(KeyCode.V))
-	{
-		Instantiate(explosion, transform.position, transform.rotation);
-	}	
 	
 	/* Movement */
 	
