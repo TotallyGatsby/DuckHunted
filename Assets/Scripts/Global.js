@@ -1,6 +1,6 @@
 #pragma strict
 static var mainScene : int = 1;
-
+static var gameScene : String = "game";
 static var sensitivity : float = 10.0;
 static var invertModifier : int = 1;
 static var mouseInvert = false;

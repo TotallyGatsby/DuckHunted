@@ -29,7 +29,7 @@ function OnGUI()
 		guiAlpha = Mathf.Lerp(guiAlpha, 1, Time.deltaTime*1.5);	
 	
 	if (GUI.Button(Rect(Screen.width-210, Screen.height - 180, 200, 50),"Start Game"))
-		Application.LoadLevel(Global.mainScene);
+		Application.LoadLevel(Global.gameScene);
 	if (GUI.Button(Rect(Screen.width-210, Screen.height - 120, 200, 50),"Options"))
 		Global.options.gameObject.active = true;
 	if (GUI.Button(Rect(Screen.width-210, Screen.height - 60, 200, 50),"Leaderboards"))

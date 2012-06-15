@@ -9,6 +9,8 @@
 Temp/*
 Library/*
 
+Build/*
+
 !Library/*.asset
 !Library/AssetImportState
 !Library/AssetVersioning.db
@@ -26,3 +28,6 @@ Library/*
 
 *.pidb
 *.userprefs
+
+# Project ignores, like our High Score super secret password mechanism!
+*HSController*
