@@ -16,10 +16,10 @@ static var hsScoreText : String;
 
 private var wasLocked = false;
 
-function Start () {
+function OnEnable () {
 	options = transform.FindChild("Options");
 	leaderboards = transform.FindChild("Leaderboards");
-	hsController = transform.GetComponent(HSController);
+	//hsController = transform.GetComponent(HSController);
 	leaderboards.gameObject.active = false;
 	options.gameObject.active = false;
 }

@@ -9,7 +9,9 @@ function Start () {
 
 function OnEnable () 
 {
-	Global.leaderboards.gameObject.active = false;
+	if (Global.leaderboards != null){
+		Global.leaderboards.gameObject.active = false;
+	}
 }
 
 function Update () {

@@ -11,7 +11,8 @@ private var duckType;
 static var ducks = new Array();
 
 function Start () {
-	
+	ducks = new Array();
+	Duck.duckCount = 0;
 }
 
 function Update () {

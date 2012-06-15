@@ -6,13 +6,16 @@ private var guiDelay = 2.0;
 
 function Start () 
 {
-
+	
 }
 
 function OnEnable () 
 {
-	Global.hsController.getScores();
-	Global.options.gameObject.active = false;
+	//Global.hsController.getScores();
+	if (Global.options){
+		Global.options.gameObject.active = false;
+	}
+	
 }
 
 function Update () {
