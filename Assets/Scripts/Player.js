@@ -54,6 +54,7 @@ function Start ()
 	gunDefaultRotation = gunTransform.localEulerAngles; // Set Default rotation
 	mouseLookScript = transform.GetComponent(MouseLook); // Get Mouse look script (For setting sensitivity when using zooming)
 	characterMotor = transform.GetComponent(CharacterMotor);
+	
 }
 
 function Update () 
@@ -223,4 +224,24 @@ function Update ()
 	
 	//Set prevCombo to combo
 	prevCombo = combo;
+}
+
+var isGameOver = false;
+
+function DogSmack (){
+	if ( !isGameOver){
+		isGameOver = true;
+		iTween.CameraFadeAdd();
+		iTween.CameraFadeTo({
+			"amount":1,
+			"time": 2,
+			"name": "gaveoverfade",
+			"oncomplete":"GoToMenu",
+			"oncompletetarget":gameObject
+		});
+	}
+}
+
+function GoToMenu(){
+	Application.LoadLevel("mainmenu");
 }

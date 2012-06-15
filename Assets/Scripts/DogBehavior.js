@@ -182,7 +182,7 @@ class DogLaunch extends DogBehavior{
 			hasLaunched = true;
 			owner.rigidbody.useGravity = true;
 			var diff = owner.player.transform.position - owner.transform.position;
-			diff.y = owner.player.transform.position.y + 1;
+			diff.y = owner.player.transform.position.y + .5;
 			
 			diff = Vector3.Normalize(diff);
 			
