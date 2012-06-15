@@ -29,9 +29,9 @@ function OnGUI()
 		guiAlpha = Mathf.Lerp(guiAlpha, 1, Time.deltaTime*1.5);	
 	
 	if (GUI.Button(Rect(Screen.width-210, Screen.height - 180, 200, 50),"Start Game"))
-		Debug.Log("Clicked Start Game");
+		Application.LoadLevel(Global.mainScene);
 	if (GUI.Button(Rect(Screen.width-210, Screen.height - 120, 200, 50),"Options"))
-		Debug.Log("Clicked Options");
+		Global.options.gameObject.active = true;
 	if (GUI.Button(Rect(Screen.width-210, Screen.height - 60, 200, 50),"Leaderboards"))
 		Debug.Log("Clicked Leaderboards");
 }

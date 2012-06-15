@@ -58,8 +58,21 @@ function Start ()
 
 function Update () 
 {
-	Screen.lockCursor = true; // Captures the mouse cursor
 	comboTimer -=  1 * Time.deltaTime;
+	
+	if (Input.GetKeyDown ("escape"))
+        Global.options.gameObject.active = !Global.options.gameObject.active;
+	
+	if (Global.options.gameObject.active == false)
+	{
+		Screen.lockCursor = true;
+		mouseLookScript.enabled = true;
+	}
+	else
+	{
+		Screen.lockCursor = false;	
+		mouseLookScript.enabled = false;
+	}
 
 	// Set combo timer to combo time when combo increases
 	if (combo != prevCombo && combo != 0)
@@ -72,24 +85,14 @@ function Update ()
 	{
 		combo = 0;
 	}
-		
-	/* DEBUG Stuff */
-	// Set sensitivity ingame (place holder till we get a proper options menu)
-	if (Input.GetKeyDown(KeyCode.N))
-	{
-		defaultSensitivity -= 1;
-		Debug.Log(defaultSensitivity);
-		mouseLookScript.sensitivityX = defaultSensitivity;
-		mouseLookScript.sensitivityY = defaultSensitivity;
-	}
-	else if (Input.GetKeyDown(KeyCode.M))
-	{
-		defaultSensitivity += 1;
-		Debug.Log("Sensitivity: " + defaultSensitivity);
-		mouseLookScript.sensitivityX = defaultSensitivity;
-		mouseLookScript.sensitivityY = defaultSensitivity;
-	}
 	
+	if (defaultSensitivity != Global.sensitivity)
+	{
+		defaultSensitivity = Global.sensitivity;
+		mouseLookScript.sensitivityX = defaultSensitivity;
+		mouseLookScript.sensitivityY = defaultSensitivity * Global.invertModifier;
+	}
+		
 	if (Input.GetKeyDown(KeyCode.V))
 	{
 		Instantiate(explosion, transform.position, transform.rotation);
@@ -185,7 +188,7 @@ function Update ()
 			
 			// Adjust sensitivity when zoomed in
 			mouseLookScript.sensitivityX = defaultSensitivity/zoomSensitivitySlowFactor;
-			mouseLookScript.sensitivityY = defaultSensitivity/zoomSensitivitySlowFactor;
+			mouseLookScript.sensitivityY = defaultSensitivity/zoomSensitivitySlowFactor * Global.invertModifier;
 			
 		}
 		else if (gunZoom == false)
@@ -197,7 +200,7 @@ function Update ()
 			
 			// Reset sensitivity when zooming out
 			mouseLookScript.sensitivityX = defaultSensitivity;
-			mouseLookScript.sensitivityY = defaultSensitivity;
+			mouseLookScript.sensitivityY = defaultSensitivity * Global.invertModifier;
 		}
 	}
 	

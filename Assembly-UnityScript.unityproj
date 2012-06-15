@@ -37,10 +37,10 @@
     <Reference Include="System.XML" />
 	<Reference Include="System.Core" />
 	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Program Files (x86)/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -51,9 +51,11 @@
      <Compile Include="Assets\Scripts\GUIBullet.js" />
      <Compile Include="Assets\Scripts\GUICombo.js" />
      <Compile Include="Assets\Scripts\GUIScore.js" />
+     <Compile Include="Assets\Scripts\Global.js" />
      <Compile Include="Assets\Scripts\HSController.js" />
      <Compile Include="Assets\Scripts\IntroScene.js" />
      <Compile Include="Assets\Scripts\Md5.js" />
+     <Compile Include="Assets\Scripts\Options.js" />
      <Compile Include="Assets\Scripts\Player.js" />
      <Compile Include="Assets\Scripts\RifleAnimationEvents.js" />
      <Compile Include="Assets\Scripts\ScoreTextMesh.js" />
