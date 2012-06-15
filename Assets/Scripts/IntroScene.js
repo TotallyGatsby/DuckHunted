@@ -1,26 +1,36 @@
 #pragma strict
 
-var time:float = 1.5;
-var duckXTarget:float = .140;
-var huntXTarget:float = 0.20;
-var edXTarget:float = .75;
-
-var duck:GameObject;
-var hunt:GameObject;
-var ed:GameObject;
+var letters:GameObject[];
+var targets:Vector3[];
+var fadeins:GameObject[];
 
 function Start () {
-	iTween.MoveTo(duck, {"x":duckXTarget, "time":time});
-	iTween.MoveTo(hunt, {"x":huntXTarget, "time":time, "oncomplete":"GoEd", "oncompletetarget":gameObject});
-}
-
-function GoEd(){
-	iTween.MoveTo(ed, {"x":edXTarget, "time":.5, "easetype":"easeInQuad", "oncomplete":"PunchHunt", "oncompletetarget":gameObject});
-}
-
-function PunchHunt(){
-	iTween.PunchPosition(hunt, {"x":-.05, "time":1.0});
-}
-function Update () {
-
+	iTween.CameraFadeAdd();
+	iTween.CameraFadeFrom({"amount":1, "time":0});
+	iTween.CameraFadeTo({"amount":0, "time":1});
+	
+	// Set the alphas to 0 on our fadein text
+	for(var obj in fadeins){
+		iTween.FadeTo(obj, {
+			"alpha":0,
+			"time": 0
+		});
+	}
+	
+	for (var i = 0; i < letters.length; i ++){
+		iTween.MoveTo(letters[i], {"position":targets[i], 
+									"time":2, 
+									"islocal":true,
+									"oncomplete":"SoftPunch", 
+									"oncompletetarget":letters[i]});
+	}
+	
+	for(i =0; i<fadeins.length; i++){
+		iTween.FadeTo(fadeins[i], {
+			"alpha":1,
+			"time": 1,
+			"delay":1.4 + i*.2
+		});
+	}
+	
 }
