@@ -100,7 +100,7 @@ function Update ()
 		/* Movement */
 		
 		// Sprint
-		if (Input.GetButtonDown("Sprint"))
+		if (Input.GetButtonDown("Sprint") && !gunTransform.FindChild("Model").animation["Reload"].enabled)
 		{
 			sprinting = true;
 			characterMotor.movement.maxForwardSpeed = sprintSpeed;
