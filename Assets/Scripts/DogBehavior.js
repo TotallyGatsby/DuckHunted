@@ -213,7 +213,7 @@ class DogLaunch extends DogBehavior{
 			var groundRay = new Ray(owner.transform.position, Vector3.down);
 			var groundRayHit: RaycastHit;
 			Physics.Raycast(groundRay, groundRayHit, 100);
-			if (groundRayHit.distance < .25){
+			if (groundRayHit.distance < .75){
 				owner.setBehavior(new DogHuntPlayer());
 				owner.rigidbody.velocity = Vector3.zero;
 			}
